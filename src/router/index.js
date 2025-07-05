@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router"; 
+import { createRouter, createWebHistory } from "vue-router";
 import kiemTraAdmin from "./kiemTraAdmin";
 import kiemTraKhachHang from "./kiemTraKhachHang";
 
@@ -15,8 +15,43 @@ const routes = [
         meta: { layout: 'cdio' }
     },
     {
+        path: '/chi-tiet-dong-ho-nu/:id_san_pham',
+        component: () => import('../components/dong-ho-nu/chi-tiet/index.vue'),
+        meta: { layout: 'cdio' }
+    },
+    {
+        path: '/chi-tiet-dong-ho-tre-em/:id_san_pham',
+        component: () => import('../components/dong-ho-tre-em/chi-tiet/index.vue'),
+        meta: { layout: 'cdio' }
+    },
+    {
+        path: '/chi-tiet-dong-ho-thong-minh/:id_san_pham',
+        component: () => import('../components/dong-ho-thong-minh/chi-tiet/index.vue'),
+        meta: { layout: 'cdio' }
+    },
+    {
         path: '/san-pham-dong-ho',
         component: () => import('../components/dong-ho/DanhSach/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+    {
+        path: '/san-pham-dong-ho-nu',
+        component: () => import('../components/dong-ho-nu/danh-sach/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+    {
+        path: '/san-pham-dong-ho-tre-em',
+        component: () => import('../components/dong-ho-tre-em/danh-sach/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+    {
+        path: '/san-pham-dong-ho-thong-minh',
+        component: () => import('../components/dong-ho-thong-minh/danh-sach/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+    {
+        path: '/tim-kiem',
+        component: () => import('../components/TimKiem/index.vue'),
         meta: { layout: 'cdio' },
     },
 
@@ -25,7 +60,7 @@ const routes = [
         component: () => import('../components/KhachHang/DangNhap/index.vue'),
         meta: { layout: 'blank' }
     },
-    
+
     {
         path: '/khach-hang/quen-mat-khau',
         component: () => import('../components/KhachHang/QuenMatKhau/index.vue'),
@@ -70,7 +105,7 @@ const routes = [
         path: '/admin/danh-muc',
         component: () => import('../components/Admin/DanhMuc/index.vue'),
     },
-    
+
     {
         path: '/admin/nhan-vien',
         component: () => import('../components/Admin/NhanVien/index.vue'),

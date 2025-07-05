@@ -43,7 +43,7 @@
             <div class="row row-cols-2 row-cols-md-4 g-3 mt-2">
                 <template v-for="(v, k) in danh_sach_dong_ho.slice(4, 8)" :key="k">
                     <div class="col">
-                        <router-link :to="'/chi-tiet-dong-ho/' + v.id" class="text-decoration-none text-dark">
+                        <router-link :to="'/chi-tiet-dong-ho-tre-em/' + v.id" class="text-decoration-none text-dark">
                             <div class="card h-100">
                                 <img :src="v.hinh_anh" class="card-img-top" style="height: 180px; object-fit: contain;">
                                 <div class="card-body">
@@ -67,13 +67,13 @@ input[type="text"] {
 
 <script>
 
-import { danh_sach_nam } from '../../../data';
+import { danh_sach_tre_em } from '../../../data';
 
 export default {
     data() {
         return {
             san_pham: null,
-            danh_sach_dong_ho: danh_sach_nam,
+            danh_sach_dong_ho: danh_sach_tre_em,
             so_luong: 1
         }
     },

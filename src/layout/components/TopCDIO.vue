@@ -13,15 +13,13 @@
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative search-bar-box input-group w-100">
-                        <input type="text"
-                            class="form-control search-control border border-1 border-secondary radius-30"
-                            placeholder="Search..."> <span
+                        <input type="text" class="form-control search-control ..." placeholder="Search..." v-model="tu_khoa" @keyup.enter="timKiem"> <span
                             class="position-absolute top-50 search-show translate-middle-y"><i
                                 class='bx bx-search'></i></span>
                         <span class="position-absolute top-50 search-close translate-middle-y"><i
                                 class='bx bx-x'></i></span>
-                        <button class="btn btn-outline-secondary radius-30" type="button" id="button-addon2">Tìm
-                            Kiếm</button>
+                        <button class="btn btn-outline-secondary radius-30" type="button" @click="timKiem">Tìm Kiếm</button>
+
                     </div>
                 </div>
                 <template v-if="auth">
@@ -98,6 +96,7 @@ export default {
         return {
             auth: false,
             name_kh: '',
+            tu_khoa: '',
         }
     },
     mounted() {
@@ -136,6 +135,10 @@ export default {
                     }
                 })
         },
+        timKiem() {
+        if (this.tu_khoa.trim() === '') return;
+        this.$router.push({ path: '/tim-kiem', query: { tu_khoa: this.tu_khoa.trim() } });
+    }
     },
 }
 </script>

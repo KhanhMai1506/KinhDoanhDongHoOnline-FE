@@ -2,15 +2,17 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
+                <!-- Tìm kiếm + Sắp xếp -->
                 <div class="row">
                     <div class="col-12">
                         <div class="row align-items-center">
                             <div class="col-lg-3">
                                 <div class="position-relative">
                                     <input type="text" class="form-control ps-5" placeholder="Tìm kiếm sản phẩm..."
-                                        v-model="tu_khoa" @input="timKiemSanPham"> <span
-                                        class="position-absolute top-50 product-show translate-middle-y"><i
-                                            class="bx bx-search"></i></span>
+                                        v-model="tu_khoa" @input="timKiemSanPham" />
+                                    <span class="position-absolute top-50 product-show translate-middle-y">
+                                        <i class="bx bx-search"></i>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-lg-9 col-xl-9">
@@ -36,21 +38,23 @@
                         </div>
                     </div>
                 </div>
-                <hr>
+
+                <hr />
+
+                <!-- Hiển thị sản phẩm -->
                 <div class="row product-grid">
                     <template v-for="(value, index) in danh_sach_dong_ho" :key="index">
                         <div class="col-lg-4 col-md-6 mt-3 d-flex">
                             <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                 class="text-decoration-none text-dark w-100">
                                 <div class="card flex-fill">
-                                    <img v-bind:src="value.hinh_anh" class="card-img-top "
-                                        style="    width: 100%; height: 230px; object-fit: contain; vertical-align: middle;"
-                                        alt="...">
+                                    <img :src="value.hinh_anh" class="card-img-top"
+                                        style="width: 100%; height: 230px; object-fit: contain;" alt="..." />
                                     <div class="card-body d-flex flex-column">
                                         <h6 class="card-title cursor-pointer">
                                             {{ value.ten_san_pham }}
                                         </h6>
-                                        <p class="card-text">
+                                        <p class="card-text text-danger">
                                             {{ formatCurrency(value.gia_ban) }}
                                         </p>
                                     </div>
@@ -63,30 +67,31 @@
         </div>
     </div>
 </template>
-<script>
 
-import { danh_sach_nam } from '../../../data';
+<script>
+import { danh_sach_tre_em } from "../../../data";
 
 export default {
     data() {
         return {
-            danh_sach_dong_ho: danh_sach_nam,
-            danh_sach_goc: danh_sach_nam
-        }
+            tu_khoa: "",
+            danh_sach_goc: danh_sach_tre_em,
+            danh_sach_dong_ho: danh_sach_tre_em,
+        };
     },
     methods: {
         formatCurrency(amount) {
-            return new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND'
+            return new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
             }).format(amount);
         },
         timKiemSanPham() {
             const keyword = this.tu_khoa.toLowerCase().trim();
-            if (keyword === '') {
+            if (keyword === "") {
                 this.danh_sach_dong_ho = this.danh_sach_goc;
             } else {
-                this.danh_sach_dong_ho = this.danh_sach_goc.filter(sp =>
+                this.danh_sach_dong_ho = this.danh_sach_goc.filter((sp) =>
                     sp.ten_san_pham.toLowerCase().includes(keyword)
                 );
             }
@@ -100,7 +105,6 @@ export default {
                 this.danh_sach_dong_ho = [...this.danh_sach_goc]; // Giữ nguyên thứ tự ban đầu
             }
         },
-    }
-}
+    },
+};
 </script>
-<style></style>

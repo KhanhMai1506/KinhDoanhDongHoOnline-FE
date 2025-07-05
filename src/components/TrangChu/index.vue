@@ -46,8 +46,8 @@
                 </div>
                 <div class="col-lg-12 mt-3">
                     <div class="h-100 rounded-5">
-                        <img src="https://file.hstatic.net/1000043302/file/web_2_1024x1024.jpg"
-                            style="height: 192px;" class="img-fluid rounded-5" alt="...">
+                        <img src="https://file.hstatic.net/1000043302/file/web_2_1024x1024.jpg" style="height: 192px;"
+                            class="img-fluid rounded-5" alt="...">
                     </div>
                 </div>
             </div>
@@ -57,54 +57,54 @@
     <div class="row mt-5">
         <div class="col-lg-12 col-md-12">
             <div class="row">
-                    <div class="col-lg-3 mb-2 d-flex">
-                        <div class="card flex-fill">
-                                <div class="card-body">
-                                    <div class="text-center d-flex flex-column justify-content-center">
-                                        <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                            <i class="fa-solid fa-person"></i>
-                                        </button>
-                                        <div class="text-dark">Đồng hồ nam</div>
-                                    </div>
-                                </div>
+                <div class="col-lg-3 mb-2 d-flex">
+                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho')">
+                        <div class="card-body">
+                            <div class="text-center d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
+                                    <i class="fa-solid fa-person"></i>
+                                </button>
+                                <div class="text-dark">Đồng hồ nam</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 mb-2 d-flex">
-                        <div class="card flex-fill">
-                                <div class="card-body">
-                                    <div class="text-center d-flex flex-column justify-content-center">
-                                        <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                            <i class="fa-solid fa-person-dress"></i>
-                                        </button>
-                                        <div class="text-dark">Đồng hồ nữ</div>
-                                    </div>
-                                </div>
+                </div>
+                <div class="col-lg-3 mb-2 d-flex">
+                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho-nu')">
+                        <div class="card-body">
+                            <div class="text-center d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
+                                    <i class="fa-solid fa-person-dress"></i>
+                                </button>
+                                <div class="text-dark">Đồng hồ nữ</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 mb-2 d-flex">
-                        <div class="card flex-fill">
-                                <div class="card-body">
-                                    <div class="text-center d-flex flex-column justify-content-center">
-                                        <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                            <i class="fa-solid fa-baby"></i>
-                                        </button>
-                                        <div class="text-dark">Đồng hồ trẻ em</div>
-                                    </div>
-                                </div>
+                </div>
+                <div class="col-lg-3 mb-2 d-flex">
+                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho-tre-em')">
+                        <div class="card-body">
+                            <div class="text-center d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
+                                    <i class="fa-solid fa-baby"></i>
+                                </button>
+                                <div class="text-dark">Đồng hồ trẻ em</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 mb-2 d-flex">
-                        <div class="card flex-fill">
-                                <div class="card-body">
-                                    <div class="text-center d-flex flex-column justify-content-center">
-                                        <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                            <i class="fa-solid fa-clock"></i>
-                                        </button>
-                                        <div class="text-dark">Đồng hồ thông minh</div>
-                                    </div>
-                                </div>
+                </div>
+                <div class="col-lg-3 mb-2 d-flex">
+                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho-thong-minh')">
+                        <div class="card-body">
+                            <div class="text-center d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
+                                    <i class="fa-solid fa-clock"></i>
+                                </button>
+                                <div class="text-dark">Đồng hồ thông minh</div>
+                            </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -119,42 +119,25 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 product-grid">
-                        <template v-for="(value, index) in danh_sach_dong_ho" :key="index">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3">
+                        <template v-for="(value, index) in sanPhamFlashSale" :key="index">
                             <div class="col d-flex">
-                                <div class="card flex-fill">
-                                    <img v-bind:src="value.hinh_anh" class="card-img-top "
-                                        style="    width: 100%; height: 230px; object-fit: contain; vertical-align: middle;"
-                                        alt="...">
-                                    <div class="">
-                                        <div class="position-absolute top-0 end-0 m-3 product-discount"><span
-                                                class="badge bg-warning mt-2">Sale</span></div>
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title cursor-pointer">
-                                                    {{ value.ten_san_pham }}
-                                               
-                                        </h6>
-                                        <div class="mt-auto">
-                                            <div class="d-flex align-items-center fs-6">
-                                                <div class="cursor-pointer">
-                                                        <i class="bx bxs-star text-warning"></i>
-                                                </div>
-                                                <p class="mb-0 ms-auto">4.2(182)</p>
-                                            </div>
-                                            <div class="clearfix mt-2">
-                                                <p class="mb-0 float-end fw-bold"><span
-                                                        class="me-2 text-decoration-line-through text-muted">{{
-                                                            value.gia_ban }}</span>
-                                                </p>
-                                            </div>
-                                        </div>
+                                <router-link :to="'/chi-tiet-dong-ho/' + value.id"
+                                    class="text-decoration-none text-dark w-100 h-100">
+                                    <div class="card h-100 d-flex flex-column">
+                                        <img :src="value.hinh_anh" class="card-img-top"
+                                            style="height: 230px; object-fit: contain;" alt="...">
 
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <h6 class="card-title">{{ value.ten_san_pham }}</h6>
+                                            <p class="card-text mb-0">{{ formatCurrency(value.gia_ban) }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </router-link>
                             </div>
                         </template>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -170,46 +153,25 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 product-grid">
-                        <template v-for="(value, index) in danh_sach_dong_ho" :key="index">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3">
+                        <template v-for="(value, index) in sanPhamNoiBat" :key="index">
                             <div class="col d-flex">
-                                <div class="card flex-fill">
-                                    <img v-bind:src="value.hinh_anh" class="card-img-top "
-                                        style="    width: 100%; height: 230px; object-fit: contain; vertical-align: middle;"
-                                        alt="...">
-                                    <div class="">
-                                        <div class="position-absolute top-0 end-0 m-3 product-discount"><span
-                                                class="badge bg-danger mt-2">Nổi Bật</span></div>
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title cursor-pointer">
-                                               
-                                                    {{ value.ten_san_pham }}
-                                                
-                                        </h6>
-                                        <div class="mt-auto">
-                                            <div class="d-flex align-items-center fs-6">
-                                                <div class="cursor-pointer">                                                        <i class="bx bxs-star text-warning"></i>
-                                                    
-                                                    
-                                                        <i class="bx bxs-star text-secondary"></i>
-                                                    
-                                                </div>
-                                                <p class="mb-0 ms-auto">4.2(182)</p>
-                                            </div>
-                                            <div class="clearfix mt-2">
-                                                <p class="mb-0 float-end fw-bold"><span
-                                                        class="me-2 text-decoration-line-through text-muted">{{
-                                                            value.gia_ban }}</span>
-                                                </p>
-                                            </div>
-                                        </div>
+                                <router-link :to="'/chi-tiet-dong-ho/' + value.id"
+                                    class="text-decoration-none text-dark w-100 h-100">
+                                    <div class="card h-100 d-flex flex-column">
+                                        <img :src="value.hinh_anh" class="card-img-top"
+                                            style="height: 230px; object-fit: contain;" alt="...">
 
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <h6 class="card-title">{{ value.ten_san_pham }}</h6>
+                                            <p class="card-text mb-0">{{ formatCurrency(value.gia_ban) }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </router-link>
                             </div>
                         </template>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -217,12 +179,24 @@
 </template>
 <script>
 
-import { danh_sach_dong_ho } from '../../data';
+import { danh_sach_nam, danh_sach_nu, danh_sach_thong_minh, danh_sach_tre_em } from '../../data';
 
 export default {
     data() {
         return {
-            danh_sach_dong_ho,
+            danh_sach_tat_ca: [
+                ...danh_sach_nam, 
+                ...danh_sach_nu, 
+                ...danh_sach_thong_minh, ...danh_sach_tre_em
+            ],
+        }
+    },
+    computed: {
+        sanPhamFlashSale() {
+            return this.danh_sach_tat_ca.filter(sp => sp.sale === true);
+        },
+        sanPhamNoiBat() {
+            return this.danh_sach_tat_ca.filter(sp => sp.is_noi_bat === true);
         }
     },
     methods: {
