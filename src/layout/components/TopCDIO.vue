@@ -5,7 +5,7 @@
                 <router-link :to="'/'">
                     <a class="dropdown-item" :href="'/'">
                         <div class="topbar-logo-header d-flex align-items-center">
-                            <img src="/src/assets/images/Remove-bg.ai_1727000743829.png" class="logo-icon" style="width: 120px;"
+                            <img src="../../assets/images/image.png" class="logo-icon" style="width: 120px;"
                                 alt="logo icon">
                         </div>
                     </a>

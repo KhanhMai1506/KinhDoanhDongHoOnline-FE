@@ -5,11 +5,11 @@
                 <div class="row mt-3">
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto ">
                         <div class="text-center mb-2">
-                            <img src="/src/assets/images/Remove-bg.ai_1727000743829.png" class="img-fluid"
+                            <img src="../../assets/images/image.png" class="img-fluid"
                                 style="width: 150px; height: auto;" alt="">
                         </div>
                         <p class="text-dark">
-                            Nơi bạn có thể dễ dàng tìm kiếm và lựa chọn những mẫu xe hơi mơ ước từ các thương hiệu nổi
+                            Nơi bạn có thể dễ dàng tìm kiếm và lựa chọn những mẫu đồng hồ mơ ước từ các thương hiệu nổi
                             tiếng.
                         </p>
                     </div>
@@ -18,10 +18,13 @@
                         <hr class="mb-3 mt-0 d-inline-block mx-auto"
                             style="width: 85px; background-color: #7c4dff; height: 2px" />
                         <p>
-                            <a href="/san-pham-oto" class="text-dark">Xe Ôtô</a>
+                            <a href="" class="text-dark">Casio</a>
                         </p>
                         <p>
-                            <a href="/san-pham-motor" class="text-dark">Xe Máy</a>
+                            <a href="" class="text-dark">Hublot</a>
+                        </p>
+                         <p>
+                            <a href="" class="text-dark">Apple Watch</a>
                         </p>
                     </div>
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mt-3 mb-4">
