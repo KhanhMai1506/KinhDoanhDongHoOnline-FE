@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import kiemTraAdmin from "./kiemTraAdmin";
 import kiemTraKhachHang from "./kiemTraKhachHang";
-
+ 
 const routes = [
     {
         path: '/',

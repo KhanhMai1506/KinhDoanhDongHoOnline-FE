@@ -19,7 +19,7 @@
             <div class="col-md-6">
                 <h4><b>{{ san_pham.ten_san_pham }}</b></h4>
                 <h5 class="mt-3 text-danger"><b>{{ formatCurrency(san_pham.gia_ban) }}</b></h5>
-                <p class="mt-3 text-muted">{{ san_pham.message }}</p>
+                <p class="mt-3 text-muted">{{ san_pham.description }}</p>
 
                 <!-- Số lượng -->
                 <div class="d-flex align-items-center my-3">

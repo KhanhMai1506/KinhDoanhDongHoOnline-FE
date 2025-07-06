@@ -45,7 +45,7 @@
                 <div class="row product-grid">
                     <template v-for="(value, index) in danh_sach_dong_ho" :key="index">
                         <div class="col-lg-4 col-md-6 mt-3 d-flex">
-                            <router-link :to="'/chi-tiet-dong-ho/' + value.id"
+                            <router-link :to="'/chi-tiet-dong-ho-tre-em/' + value.id"
                                 class="text-decoration-none text-dark w-100">
                                 <div class="card flex-fill">
                                     <img :src="value.hinh_anh" class="card-img-top"
