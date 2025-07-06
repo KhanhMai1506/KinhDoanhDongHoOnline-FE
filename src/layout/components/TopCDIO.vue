@@ -5,21 +5,22 @@
                 <router-link :to="'/'">
                     <a class="dropdown-item" :href="'/'">
                         <div class="topbar-logo-header d-flex align-items-center">
-                            <img src="/src/assets/images/logo.png" class="logo-icon"
-                                style="width: 120px;" alt="logo icon">
+                            <img src="/src/assets/images/logo.png" class="logo-icon" style="width: 120px;"
+                                alt="logo icon">
                         </div>
                     </a>
                 </router-link>
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative search-bar-box input-group w-100">
-                        <input type="text" class="form-control search-control ..." placeholder="Search..." v-model="tu_khoa" @keyup.enter="timKiem"> <span
+                        <input type="text" class="form-control search-control ..." placeholder="Search..."
+                            v-model="tu_khoa" v-on:keyup.enter="timKiem()"> <span
                             class="position-absolute top-50 search-show translate-middle-y"><i
                                 class='bx bx-search'></i></span>
                         <span class="position-absolute top-50 search-close translate-middle-y"><i
                                 class='bx bx-x'></i></span>
-                        <button class="btn btn-outline-secondary radius-30" type="button" @click="timKiem">Tìm Kiếm</button>
-
+                        <button class="btn btn-outline-secondary radius-30" type="button" v-on:click="timKiem()">Tìm
+                            Kiếm</button>
                     </div>
                 </div>
                 <template v-if="auth">
@@ -31,7 +32,7 @@
                             </li>
                             <li class="nav-item dropdown dropdown-large">
                                 <router-link to="/khach-hang/gio-hang">
-                                    <a class="nav-link position-relative"> <span class="alert-count">7</span>
+                                    <a class="nav-link position-relative"> <span class="alert-count">N</span>
                                         <i class='bx bx-cart-alt'></i>
                                     </a>
                                 </router-link>
@@ -41,7 +42,8 @@
                     <div class="user-box dropdown">
                         <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://png.pngtree.com/png-clipart/20230311/ourlarge/pngtree-sad-boy-chibi-character-png-image_6644700.png" class="user-img rounded-circle p-1 bg-dark" alt="user avatar">
+                            <img src="https://png.pngtree.com/png-clipart/20230311/ourlarge/pngtree-sad-boy-chibi-character-png-image_6644700.png"
+                                class="user-img rounded-circle p-1 bg-dark" alt="user avatar">
                             <div class="user-info ps-3">
                                 <p class="user-name mb-0">{{ name_kh }}</p>
                                 <p class="designattion mb-0">Khách Hàng</p>
@@ -136,9 +138,13 @@ export default {
                 })
         },
         timKiem() {
-        if (this.tu_khoa.trim() === '') return;
-        this.$router.push({ path: '/tim-kiem', query: { tu_khoa: this.tu_khoa.trim() } });
-    }
+            this.$router.push({
+                name: 'name_tim_kiem',
+                params: {
+                    thong_tin: this.tu_khoa,
+                }
+            });
+        },
     },
 }
 </script>

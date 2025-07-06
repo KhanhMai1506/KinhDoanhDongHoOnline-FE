@@ -47,7 +47,8 @@
                     <div class="col">
                         <router-link :to="'/chi-tiet-dong-ho/' + value.id" class="text-decoration-none text-dark">
                             <div class="card h-100">
-                                <img :src="value.hinh_anh" class="card-img-top" style="height: 180px; object-fit: contain;">
+                                <img :src="value.hinh_anh" class="card-img-top"
+                                    style="height: 180px; object-fit: contain;">
                                 <div class="card-body">
                                     <h6 class="card-title">{{ value.ten_san_pham }}</h6>
                                     <p class="card-text">{{ formatCurrency(value.gia_ban) }}</p>
@@ -60,8 +61,7 @@
         </div>
     </div>
 </template>
-<style>
-</style>
+<style></style>
 
 <script>
 
@@ -74,6 +74,12 @@ export default {
             san_pham: {},
             san_pham_de_xuat: []
         }
+    },
+    beforeRouteUpdate(to, from, next) {
+        this.id_san_pham = to.params.id_san_pham;
+        this.layThongTinSanPham();
+        this.laySanPhamDeXuat();
+        next();
     },
     mounted() {
         this.layThongTinSanPham();
@@ -94,7 +100,7 @@ export default {
                     }
                 })
         },
-        laySanPhamDeXuat(id_san_pham) {
+        laySanPhamDeXuat() {
             axios.get('http://127.0.0.1:8000/api/san-pham-de-xuat/' + this.id_san_pham)
                 .then(res => {
                     if (res.data.status) {

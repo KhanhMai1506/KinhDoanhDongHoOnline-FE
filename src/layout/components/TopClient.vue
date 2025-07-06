@@ -13,15 +13,12 @@
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative search-bar-box input-group w-100">
-                        <input type="text"
-                            class="form-control search-control border border-1 border-secondary radius-30"
-                            placeholder="Search..."> <span
+                        <input type="text" class="form-control search-control ..." placeholder="Search..." v-model="tu_khoa" v-on:keyup.enter="timKiem()"> <span
                             class="position-absolute top-50 search-show translate-middle-y"><i
                                 class='bx bx-search'></i></span>
                         <span class="position-absolute top-50 search-close translate-middle-y"><i
                                 class='bx bx-x'></i></span>
-                        <button class="btn btn-outline-secondary radius-30" type="button" id="button-addon2">Tìm
-                            Kiếm</button>
+                        <button class="btn btn-outline-secondary radius-30" type="button" v-on:click="timKiem()">Tìm Kiếm</button>
                     </div>
                 </div>
                 <template v-if="auth">
@@ -33,7 +30,7 @@
                             </li>
                             <li class="nav-item dropdown dropdown-large">
                                 <router-link to="/khach-hang/gio-hang">
-                                    <a class="nav-link position-relative"> <span class="alert-count">7</span>
+                                    <a class="nav-link position-relative"> <span class="alert-count">N</span>
                                         <i class='bx bx-cart-alt'></i>
                                     </a>
                                 </router-link>
@@ -98,6 +95,7 @@ export default {
         return {
             auth: false,
             name_kh: '',
+            tu_khoa: '',
         }
     },
     mounted() {
@@ -135,6 +133,14 @@ export default {
                         this.auth = true
                     }
                 })
+        },
+        timKiem() {
+            this.$router.push({
+                name: 'name_tim_kiem',
+                params: {
+                    thong_tin: this.tu_khoa,
+                }
+            });
         },
     },
 }

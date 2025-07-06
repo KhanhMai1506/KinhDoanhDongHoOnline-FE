@@ -24,9 +24,11 @@ const routes = [
     },
     
     {
-        path: '/tim-kiem',
+        path: '/tim-kiem/:thong_tin',
         component: () => import('../components/TimKiem/index.vue'),
         meta: { layout: 'cdio' },
+        name: 'name_tim_kiem',
+        props: true
     },
 
     {
@@ -50,15 +52,14 @@ const routes = [
     {
         path: '/khach-hang/profile',
         component: () => import('../components/KhachHang/Profile/index.vue'),
-        meta: { layout: 'client' },
+        meta: { layout: 'cdio' },
         beforeEnter: kiemTraKhachHang,
     },
 
     {
         path: '/khach-hang/gio-hang',
         component: () => import('../components/KhachHang/GioHang/index.vue'),
-        meta: { layout: 'client' },
-        name: 'gioHang',
+        meta: { layout: 'cdio' },
         beforeEnter: kiemTraKhachHang
     },
 

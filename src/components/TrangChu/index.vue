@@ -168,14 +168,12 @@ export default {
                 .get("http://127.0.0.1:8000/api/danh-muc/data")
                 .then((res) => {
                     this.list_danh_muc = res.data.data;
-                    console.log('Dữ liệu danh mục:', this.list_danh_muc);
                 });
         },
         loadDataSanPhamNoiBat() {
             axios
                 .get("http://127.0.0.1:8000/api/san-pham/data-noi-bat")
                 .then((res) => {
-                    console.log("Nổi bật:", res.data);
                     this.list_noi_bat = res.data.data;
                 });
         },

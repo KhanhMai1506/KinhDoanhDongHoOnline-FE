@@ -6,7 +6,8 @@
                     <div class="col-6">
                         <div class="d-lg-flex align-items-center mb-4 gap-3">
                             <div class="position-relative">
-                                <input type="text" class="form-control ps-5 radius-30 border border-1 border-secondary"
+                                <input v-model="tu_khoa" type="text"
+                                    class="form-control ps-5 radius-30 border border-1 border-secondary"
                                     placeholder="Search Order"> <span
                                     class="position-absolute top-50 product-show translate-middle-y"><i
                                         class="bx bx-search"></i></span>
@@ -15,7 +16,8 @@
                     </div>
                     <div class="col-6">
                         <div class="text-end">
-                            <input class="form-check-input me-3" type="checkbox" value="" v-on:change="doiCheck()" aria-label="..."><b>Chọn Tất
+                            <input class="form-check-input me-3" type="checkbox" value="" v-on:change="doiCheck()"
+                                aria-label="..."><b>Chọn Tất
                                 Cả</b>
                         </div>
                     </div>
@@ -37,7 +39,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(value, index) in list_gio_hang" :key="index">
+                            <tr v-for="(value, index) in filterGioHang" :key="index">
                                 <td class="align-middle text-center">
                                     <input v-model="value.dang_chon" @change="tinhTongTien()"
                                         v-on:click="doiDangChon(value)" class="form-check-input me-3"
@@ -114,6 +116,7 @@ export default {
             tong_tien: 0,
             id_dia_chi: null,
             checked: 0,
+            tu_khoa: '',
         }
     },
     mounted() {
@@ -246,6 +249,15 @@ export default {
             this.tinhTongTien();
         },
     },
+    computed: {
+        filterGioHang() {
+            if (!this.tu_khoa) return this.list_gio_hang;
+
+            return this.list_gio_hang.filter(gh =>
+                gh.ten_san_pham.toLowerCase().includes(this.tu_khoa.toLowerCase())
+            );
+        }
+    }
 }
 </script>
 

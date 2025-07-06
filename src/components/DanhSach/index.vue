@@ -8,7 +8,7 @@
                             <div class="col-lg-3">
                                 <div class="position-relative">
                                     <input type="text" class="form-control ps-5" placeholder="Tìm kiếm sản phẩm..."
-                                        v-model="tu_khoa" @input="timKiemSanPham"> <span
+                                        v-model="tag_search"> <span
                                         class="position-absolute top-50 product-show translate-middle-y"><i
                                             class="bx bx-search"></i></span>
                                 </div>
@@ -18,15 +18,15 @@
                                     <div class="row row-cols-lg-2 row-cols-xl-auto g-2">
                                         <div class="col">
                                             <button type="button" class="btn btn-outline-secondary me-2 px-3 radius-30"
-                                                @click="sapXep('moi')">
+                                                v-on:click="sortType = 'moi'">
                                                 Mới Nhất
                                             </button>
                                             <button type="button" class="btn btn-outline-secondary me-2 px-3 radius-30"
-                                                @click="sapXep('tang')">
+                                                v-on:click="sortType = 'tang'">
                                                 Giá Tăng Dần
                                             </button>
                                             <button type="button" class="btn btn-outline-secondary me-2 px-3 radius-30"
-                                                @click="sapXep('giam')">
+                                                v-on:click="sortType = 'giam'">
                                                 Giá Giảm Dần
                                             </button>
                                         </div>
@@ -38,7 +38,7 @@
                 </div>
                 <hr>
                 <div class="row product-grid">
-                    <template v-for="(value, index) in list_san_pham" :key="index">
+                    <template v-for="(value, index) in searchProduct" :key="index">
                         <div class="col-lg-4 col-md-6 mt-3 d-flex">
                             <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                 class="text-decoration-none text-dark w-100">
@@ -72,6 +72,8 @@ export default {
         return {
             id_danh_muc: null,
             list_san_pham: [],
+            tag_search: '',
+            sortType: 'moi',
         }
     },
     beforeRouteUpdate(to, from, next) {
@@ -106,8 +108,27 @@ export default {
                 style: 'currency',
                 currency: 'VND'
             }).format(value);
-        }
+        },
+
     },
+    computed: {
+        searchProduct() {
+            let result = this.list_san_pham.filter((value) => {
+                return this.tag_search === '' ||
+                    value.ten_san_pham.toLowerCase().includes(this.tag_search.toLowerCase());
+            });
+
+            if (this.sortType === 'moi') {
+                result.sort((a, b) => b.id - a.id);
+            } else if (this.sortType === 'tang') {
+                result.sort((a, b) => a.gia_ban - b.gia_ban);
+            } else if (this.sortType === 'giam') {
+                result.sort((a, b) => b.gia_ban - a.gia_ban);
+            }
+
+            return result;
+        }
+    }
 
 }
 </script>
