@@ -57,57 +57,26 @@
     <div class="row mt-5">
         <div class="col-lg-12 col-md-12">
             <div class="row">
-                <div class="col-lg-3 mb-2 d-flex">
-                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho')">
-                        <div class="card-body">
-                            <div class="text-center d-flex flex-column justify-content-center">
-                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                    <i class="fa-solid fa-person"></i>
-                                </button>
-                                <div class="text-dark">Đồng hồ nam</div>
-                            </div>
+                <template v-for="(value, index) in list_danh_muc" :key="index">
+                    <div class="col-lg-3 mb-2 d-flex">
+                        <div class="card flex-fill">
+                            <router-link :to="`/` + value.slug_danh_muc">
+                                <div class="card-body">
+                                    <div class="text-center d-flex flex-column justify-content-center">
+                                        <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
+                                            <span v-html="value.icon_danh_muc"></span>
+                                        </button>
+                                        <div class="text-dark">{{ value.ten_danh_muc }}</div>
+                                    </div>
+                                </div>
+                            </router-link>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 mb-2 d-flex">
-                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho-nu')">
-                        <div class="card-body">
-                            <div class="text-center d-flex flex-column justify-content-center">
-                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                    <i class="fa-solid fa-person-dress"></i>
-                                </button>
-                                <div class="text-dark">Đồng hồ nữ</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 mb-2 d-flex">
-                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho-tre-em')">
-                        <div class="card-body">
-                            <div class="text-center d-flex flex-column justify-content-center">
-                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                    <i class="fa-solid fa-baby"></i>
-                                </button>
-                                <div class="text-dark">Đồng hồ trẻ em</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 mb-2 d-flex">
-                    <div class="card flex-fill" @click="$router.push('/san-pham-dong-ho-thong-minh')">
-                        <div class="card-body">
-                            <div class="text-center d-flex flex-column justify-content-center">
-                                <button type="button" class="btn btn-outline-secondary mx-auto ps-3 mb-2">
-                                    <i class="fa-solid fa-clock"></i>
-                                </button>
-                                <div class="text-dark">Đồng hồ thông minh</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </template>
             </div>
         </div>
     </div>
+    <!-- List Flash Sale -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -119,8 +88,8 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3">
-                        <template v-for="(value, index) in sanPhamFlashSale" :key="index">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3">
+                        <template v-for="(value, index) in list_flash_sale" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                     class="text-decoration-none text-dark w-100 h-100">
@@ -142,6 +111,7 @@
             </div>
         </div>
     </div>
+    <!-- List Nổi Bật -->
     <div class="row mt-4">
         <div class="col-lg-12">
             <div class="card    ">
@@ -153,8 +123,8 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3">
-                        <template v-for="(value, index) in sanPhamNoiBat" :key="index">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3">
+                        <template v-for="(value, index) in list_noi_bat" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                     class="text-decoration-none text-dark w-100 h-100">
@@ -178,35 +148,51 @@
     </div>
 </template>
 <script>
-
-import { danh_sach_nam, danh_sach_nu, danh_sach_thong_minh, danh_sach_tre_em } from '../../data';
-
+import axios from 'axios';
 export default {
     data() {
         return {
-            danh_sach_tat_ca: [
-                ...danh_sach_nam, 
-                ...danh_sach_nu, 
-                ...danh_sach_thong_minh, ...danh_sach_tre_em
-            ],
+            list_danh_muc: [],
+            list_flash_sale: [],
+            list_noi_bat: [],
         }
     },
-    computed: {
-        sanPhamFlashSale() {
-            return this.danh_sach_tat_ca.filter(sp => sp.sale === true);
-        },
-        sanPhamNoiBat() {
-            return this.danh_sach_tat_ca.filter(sp => sp.is_noi_bat === true);
-        }
+    mounted() {
+        this.loadDataDanhMuc();
+        this.loadDataSanPhamFlashSale();
+        this.loadDataSanPhamNoiBat();
     },
     methods: {
-        formatCurrency(amount) {
+        loadDataDanhMuc() {
+            axios
+                .get("http://127.0.0.1:8000/api/danh-muc/data")
+                .then((res) => {
+                    this.list_danh_muc = res.data.data;
+                    console.log('Dữ liệu danh mục:', this.list_danh_muc);
+                });
+        },
+        loadDataSanPhamNoiBat() {
+            axios
+                .get("http://127.0.0.1:8000/api/san-pham/data-noi-bat")
+                .then((res) => {
+                    console.log("Nổi bật:", res.data);
+                    this.list_noi_bat = res.data.data;
+                });
+        },
+        loadDataSanPhamFlashSale() {
+            axios
+                .get("http://127.0.0.1:8000/api/san-pham/data-flash-sale")
+                .then((res) => {
+                    this.list_flash_sale = res.data.data;
+                });
+        },
+        formatCurrency(value) {
             return new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
                 currency: 'VND'
-            }).format(amount);
+            }).format(value);
         }
-    }
+    },
 }
 </script>
 <style></style>

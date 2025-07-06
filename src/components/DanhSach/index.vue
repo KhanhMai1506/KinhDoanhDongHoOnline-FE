@@ -38,9 +38,9 @@
                 </div>
                 <hr>
                 <div class="row product-grid">
-                    <template v-for="(value, index) in danh_sach_dong_ho" :key="index">
+                    <template v-for="(value, index) in list_san_pham" :key="index">
                         <div class="col-lg-4 col-md-6 mt-3 d-flex">
-                            <router-link :to="'/chi-tiet-dong-ho-thong-minh/' + value.id"
+                            <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                 class="text-decoration-none text-dark w-100">
                                 <div class="card flex-fill">
                                     <img v-bind:src="value.hinh_anh" class="card-img-top "
@@ -65,42 +65,50 @@
 </template>
 <script>
 
-import { danh_sach_thong_minh } from '../../../data';
-
+import axios from 'axios';
 export default {
+    props: ['slug_danh_muc'],
     data() {
         return {
-            danh_sach_dong_ho: danh_sach_thong_minh,
-            danh_sach_goc: danh_sach_thong_minh
+            id_danh_muc: null,
+            list_san_pham: [],
         }
     },
+    beforeRouteUpdate(to, from, next) {
+        this.laySanPhamTuDanhMuc(to.params.slug_danh_muc);
+        next();
+    },
+    mounted() {
+        this.laySanPhamTuDanhMuc(this.slug_danh_muc);
+    },
     methods: {
-        formatCurrency(amount) {
+        laySanPhamTuDanhMuc(slug) {
+            // Gọi API ánh xạ slug → id
+            axios.get('http://127.0.0.1:8000/api/slug-to-id/' + slug)
+                .then((res) => {
+                    if (res.data.status) {
+                        this.id_danh_muc = res.data.data.id; // id từ slug
+                        return axios.get('http://127.0.0.1:8000/api/san-pham-tu-danh-muc/' + this.id_danh_muc);
+                    } else {
+                        throw new Error(res.data.message);
+                    }
+                })
+                .then((res) => {
+                    this.list_san_pham = res.data.data;
+                })
+                .catch((err) => {
+                    this.$toast.error('Không tìm thấy danh mục.');
+                    this.$router.push('/');
+                });
+        },
+        formatCurrency(value) {
             return new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
                 currency: 'VND'
-            }).format(amount);
-        },
-        timKiemSanPham() {
-            const keyword = this.tu_khoa.toLowerCase().trim();
-            if (keyword === '') {
-                this.danh_sach_dong_ho = this.danh_sach_goc;
-            } else {
-                this.danh_sach_dong_ho = this.danh_sach_goc.filter(sp =>
-                    sp.ten_san_pham.toLowerCase().includes(keyword)
-                );
-            }
-        },
-        sapXep(kieu) {
-            if (kieu === "tang") {
-                this.danh_sach_dong_ho.sort((a, b) => a.gia_ban - b.gia_ban);
-            } else if (kieu === "giam") {
-                this.danh_sach_dong_ho.sort((a, b) => b.gia_ban - a.gia_ban);
-            } else if (kieu === "moi") {
-                this.danh_sach_dong_ho = [...this.danh_sach_goc]; // Giữ nguyên thứ tự ban đầu
-            }
-        },
-    }
+            }).format(value);
+        }
+    },
+
 }
 </script>
 <style></style>

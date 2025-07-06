@@ -14,7 +14,7 @@ export const danh_sach_nam = [
         hinh_anh:     "https://media.shopdongho.com/2021/05/hinh-anh-AE-1200WHD-1AVDF-new-2.jpg",
         gia_ban:      1506000,
         description:  "Đồng hồ nam Casio AE-1200WHD-1AVDF sở hữu mặt vuông thể thao, màn hình điện tử sắc nét và dây đeo kim loại bền bỉ. Thiết kế mạnh mẽ, phù hợp cho nam giới năng động.",
-    is_noi_bat: false,
+        is_noi_bat: false,
         sale: true
     },
     {
@@ -23,7 +23,7 @@ export const danh_sach_nam = [
         hinh_anh:     "https://media.shopdongho.com/2023/04/dong-ho-Casio-MTP-VT01L-1BUDF-1.jpg",
         gia_ban:      1182000,
         description:  "Đồng hồ nam Casio MTP-VT01L-1BUDF với phần dây da tone đen tạo hình vân cá sấu, kết hợp với các chi tiết vỏ máy mạ bạc và kiểu thiết kế mỏng độ dày chỉ 8mm. Với thiết kế đơn giản nhưng đầy phong cách, mẫu đồng hồ này trở thành một lựa chọn tuyệt vời cho những quý ông yêu thích phong cách thanh lịch.",
-    is_noi_bat: true,
+        is_noi_bat: true,
         sale: false
     },
     {
