@@ -4,12 +4,12 @@
             <div class="container text-center text-md-start mt-5">
                 <div class="row mt-3">
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto ">
-                        <div class="text-center mb-2">
-                            <img src="/src/assets/images/Remove-bg.ai_1727000743829.png" class="img-fluid"
-                                style="width: 150px; height: auto;" alt="">
+                        <div class="text-center mt-3 mb-2">
+                            <img src="/src/assets/images/logo.png" class="img-fluid"
+                                style="width: 120px; height: auto;" alt="">
                         </div>
                         <p class="text-dark">
-                            Nơi bạn có thể dễ dàng tìm kiếm và lựa chọn những mẫu xe hơi mơ ước từ các thương hiệu nổi
+                            Nơi bạn có thể dễ dàng tìm kiếm và lựa chọn những mẫu đồng hồ mơ ước từ các thương hiệu nổi
                             tiếng.
                         </p>
                     </div>
@@ -18,10 +18,16 @@
                         <hr class="mb-3 mt-0 d-inline-block mx-auto"
                             style="width: 85px; background-color: #7c4dff; height: 2px" />
                         <p>
-                            <a href="/san-pham-oto" class="text-dark">Xe Ôtô</a>
+                            <a href="/dong-ho-nam" class="text-dark">Đồng Hồ Nam</a>
                         </p>
                         <p>
-                            <a href="/san-pham-motor" class="text-dark">Xe Máy</a>
+                            <a href="/dong-ho-nu" class="text-dark">Đồng Hồ Nữ</a>
+                        </p>
+                        <p>
+                            <a href="/dong-ho-tre-em" class="text-dark">Đồng Hồ Trẻ Em</a>
+                        </p>
+                        <p>
+                            <a href="/dong-ho-thong-minh" class="text-dark">Đồng Hồ Thông Minh</a>
                         </p>
                     </div>
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mt-3 mb-4">
