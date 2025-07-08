@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" height="480" width="640" id="flag-icon-css-lv">
   <g fill-rule="evenodd">
     <path fill="#fff" d="M0 0h640v480.003H0z"/>
     <path fill="#ab231d" d="M0 0h640v192.001H0zm0 288.002h640v192.001H0z"/>
   </g>
 </svg>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" height="480" width="640" id="flag-icon-css-lv">
+  <g fill-rule="evenodd">
+    <path fill="#fff" d="M0 0h640v480.003H0z"/>
+    <path fill="#ab231d" d="M0 0h640v192.001H0zm0 288.002h640v192.001H0z"/>
+  </g>
+</svg>
+>>>>>>> bb7e0d4cd30f01c2216798ba2807069a72459bac

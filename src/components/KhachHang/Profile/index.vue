@@ -86,8 +86,7 @@
                                             <div class="row">
                                                 <div class="col-lg-3"></div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <button v-on:click="updateProfile()" type="button"
-                                                        class="btn btn-primary px-4">Lưu</button>
+                                                    <button type="button" class="btn btn-primary px-4">Lưu</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +114,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <h5 class="mb-4">Địa chỉ</h5>
-                                                {{ value.ten_nguoi_nhan }} | ({{ value.so_dien_thoai }})
+                                                {{ value.ten_nguoi_nhan }} | {{ value.so_dien_thoai }}
                                                 <div class="row">
                                                     <div class="col-lg-6">{{ value.dia_chi }}</div>
                                                 </div>
@@ -123,13 +122,12 @@
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-2 text-end">
                                                 <div class="row mb-2 mt-3">
-                                                    <button v-on:click="delete_dia_chi = value" type="button"
-                                                        class="btn btn-danger px-5 radius-30" data-bs-toggle="modal"
+                                                    <button v-on:click="delete_dia_chi = value" type="button" class="btn btn-danger px-5 radius-30"
+                                                        data-bs-toggle="modal"
                                                         data-bs-target="#deleteModal">Xoá</button>
                                                 </div>
                                                 <div class="row">
-                                                    <button v-on:click="Object.assign(update_dia_chi, value)"
-                                                        type="button" class="btn btn-primary px-5 radius-30"
+                                                    <button v-on:click="Object.assign(update_dia_chi, value)" type="button" class="btn btn-primary px-5 radius-30"
                                                         data-bs-toggle="modal" data-bs-target="#capnhatModal">Cập
                                                         Nhật</button>
                                                 </div>
@@ -138,6 +136,7 @@
                                     </div>
                                 </div>
                             </template>
+
                             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                                 style="display: none;" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -156,9 +155,9 @@
                                                     <div class="ms-3">
                                                         <h6 class="mb-0 text-dark">Lưu ý!</h6>
                                                         <div class="text-dark">
-                                                            Dòng này sẽ bị xoá vĩnh viễn!
+                                                            Địa chỉ này sẽ bị xoá vĩnh viễn!
                                                             <br>
-                                                            Bạn có chắc chắn muốn xoá <b>{{ delete_dia_chi.dia_chi }}</b> không?
+                                                            Bạn có chắc chắn muốn xoá địa chỉ này không?
                                                         </div>
                                                     </div>
                                                 </div>
@@ -248,6 +247,39 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="primarycontact" role="tabpanel">
+                            <div class="col">
+                                <h4>Thay đổi mật khẩu</h4>
+                            </div>
+                            <div class="col">Quản lý mật khẩu để bảo mật tài khoản</div>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-lg-2">
+                                    <label for="">Mật khẩu cũ</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-lg-2">
+                                    <label for="">Mật khẩu mới</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="password" placeholder="Nhập mật khẩu mới" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-lg-2">
+                                    <label for="">Nhập lại Mật khẩu mới </label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">Lưu</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,7 +300,7 @@ export default {
     },
     mounted() {
         this.getDataProfile();
-        this.getDataDiaChi()
+        this.layDiaChi();
     },
     methods: {
         getDataProfile() {
@@ -282,25 +314,7 @@ export default {
                     this.profile = res.data.data;
                 })
         },
-        updateProfile() {
-            axios
-                .post("http://127.0.0.1:8000/api/khach-hang/profile/update", this.profile, {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
-                    }
-                })
-                .then((res) => {
-                    if (res.data.status) {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.success(thong_bao);
-                        this.getDataProfile()
-                    } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.error(thong_bao);
-                    }
-                })
-        },
-        getDataDiaChi() {
+        layDiaChi() {
             axios
                 .get("http://127.0.0.1:8000/api/khach-hang/dia-chi/data", {
                     headers: {
@@ -309,7 +323,7 @@ export default {
                 })
                 .then((res) => {
                     this.list_dia_chi = res.data.data;
-                })
+                });
         },
         createDiaChi() {
             axios
@@ -322,7 +336,7 @@ export default {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
-                        this.getDataDiaChi()
+                        this.layDiaChi()
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
@@ -340,7 +354,7 @@ export default {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
-                        this.getDataDiaChi()
+                        this.layDiaChi()
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
@@ -358,7 +372,7 @@ export default {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
-                        this.getDataDiaChi()
+                        this.layDiaChi()
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);

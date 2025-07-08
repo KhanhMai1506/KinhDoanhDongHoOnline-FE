@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -16,4 +17,20 @@ app.component("default-layout", Default);
 app.component("blank-layout", Blank);
 app.component("client-layout", Client);
 app.component("cdio-layout", Cdio);
+=======
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import Blank from './layout/wrapper/index_blank.vue'
+import Cdio from './layout/wrapper/index_cdio.vue'
+import Toaster from "@meforma/vue-toaster"
+const app = createApp(App)
+
+app.use(router)
+app.use(Toaster, {
+    position: "top-right"
+})
+app.component("blank-layout", Blank);
+app.component("cdio-layout", Cdio);
+>>>>>>> bb7e0d4cd30f01c2216798ba2807069a72459bac
 app.mount("#app")
