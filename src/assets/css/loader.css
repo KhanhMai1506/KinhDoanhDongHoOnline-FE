@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
 	===============================
 			@Import	Function
@@ -29,35 +28,3 @@ div#load_screen {
 
 .spinner-grow {
   color: #304aca; }
-=======
-/*
-	===============================
-			@Import	Function
-	===============================
-*/
-/*
-	===============================
-			@Import	Mixins
-	===============================
-*/
-div#load_screen {
-  background: #ecefff;
-  opacity: 1;
-  position: fixed;
-  z-index: 999999;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%; }
-  div#load_screen .loader {
-    display: flex;
-    justify-content: center;
-    height: 100vh; }
-  div#load_screen .loader-content {
-    right: 0;
-    align-self: center; }
-
-.spinner-grow {
-  color: #304aca; }
->>>>>>> bb7e0d4cd30f01c2216798ba2807069a72459bac
