@@ -11,7 +11,7 @@
                     </a>
                 </router-link>
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
-                <div class="search-bar flex-grow-1">
+                <!-- <div class="search-bar flex-grow-1">
                     <div class="position-relative search-bar-box input-group w-100">
                         <input type="text" class="form-control search-control ..." placeholder="Search..."
                             v-model="tu_khoa" v-on:keyup.enter="timKiem()"> <span
@@ -21,6 +21,18 @@
                                 class='bx bx-x'></i></span>
                         <button class="btn btn-outline-secondary radius-30" type="button" v-on:click="timKiem()">Tìm
                             Kiếm</button>
+                    </div>
+                </div> -->
+                <div class="search-bar flex-grow-1">
+                    <div class="position-relative search-bar-box w-100">
+                        <input type="text" class="form-control search-control rounded-pill" style="border: 1px solid gray;" placeholder="Type to search..."
+                            v-model="tu_khoa" v-on:keyup.enter="timKiem()">
+                        <span class="position-absolute top-50 search-show translate-middle-y">
+                            <i class="bx bx-search"></i>
+                        </span>
+                        <button class="position-absolute top-50 end-0 translate-middle-y btn rounded-pill" type="button"
+                            style="z-index: 1; outline: none; box-shadow: none;">Tìm Kiếm
+                        </button>
                     </div>
                 </div>
                 <template v-if="auth">
@@ -148,4 +160,5 @@ export default {
     },
 }
 </script>
-<style></style>
+<style>
+</style>

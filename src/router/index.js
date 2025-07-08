@@ -9,6 +9,12 @@ const routes = [
     },
 
     {
+        path: '/lien-he',
+        component: () => import('../components/LienHe/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+
+    {
         path: '/:slug_danh_muc',
         component: () => import('../components/DanhSach/index.vue'),
         meta: { layout: 'cdio' },

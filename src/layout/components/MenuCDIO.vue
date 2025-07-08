@@ -29,8 +29,8 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <router-link :to="'/'">
-                        <a class="nav-link" :href="'/'">
+                    <router-link :to="'/lien-he'">
+                        <a class="nav-link" href="">
                             <div class="parent-icon"><i class="fa-solid fa-phone"></i>
                             </div>
                             <div class="menu-title">Liên Hệ</div>
