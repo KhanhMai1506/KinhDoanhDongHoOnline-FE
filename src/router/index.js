@@ -76,6 +76,12 @@ const routes = [
         meta: { layout: 'client' },
         beforeEnter: kiemTraKhachHang
     },
+
+    {
+        path: '/tu-van',
+        component: () => import('../components/Chatbot/index.vue'),
+        meta: { layout: 'blank' }
+    },
 ]
 
 const router = createRouter({
