@@ -88,7 +88,7 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
                         <template v-for="(value, index) in list_flash_sale" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"
@@ -123,7 +123,7 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
                         <template v-for="(value, index) in list_noi_bat" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"

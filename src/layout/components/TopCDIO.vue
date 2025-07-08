@@ -31,7 +31,7 @@
                             <i class="bx bx-search"></i>
                         </span>
                         <button class="position-absolute top-50 end-0 translate-middle-y btn rounded-pill" type="button"
-                            style="z-index: 1; outline: none; box-shadow: none;">Tìm Kiếm
+                            style="z-index: 1; outline: none; box-shadow: none;" v-on:click="timKiem()">Tìm Kiếm
                         </button>
                     </div>
                 </div>
