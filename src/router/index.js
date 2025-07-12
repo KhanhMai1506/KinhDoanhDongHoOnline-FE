@@ -80,7 +80,8 @@ const routes = [
     {
         path: '/tu-van',
         component: () => import('../components/Chatbot/index.vue'),
-        meta: { layout: 'blank' }
+        meta: { layout: 'cdio' },
+        beforeEnter: kiemTraKhachHang
     },
 ]
 

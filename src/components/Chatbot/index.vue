@@ -78,7 +78,7 @@ export default {
       isLoading: false,
       isOnline: true,
       errorMessage: '',
-      apiBaseUrl: 'http://localhost:8000'
+      apiBaseUrl: 'http://localhost:8001'
     }
   },
 

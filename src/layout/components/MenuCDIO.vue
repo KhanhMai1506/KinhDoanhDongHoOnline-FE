@@ -38,8 +38,8 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link :to="'/'">
-                        <a class="nav-link" :href="'/'">
+                    <router-link :to="'/tu-van'">
+                        <a class="nav-link" :href="'/tu-van'">
                             <div class="parent-icon"><i class="fa-brands fa-rocketchat"></i>
                             </div>
                             <div class="menu-title">Tư Vấn</div>
