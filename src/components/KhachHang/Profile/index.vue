@@ -79,14 +79,14 @@
                                                     <h6 class="mb-0">Số Điện Thoại</h6>
                                                 </div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <input v-model="profile.so_dien_thoai" type="text"
+                                                    <input  v-model="profile.so_dien_thoai" type="text"
                                                         class="form-control" placeholder="Nhập số điện thoại">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-3"></div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <button type="button" class="btn btn-primary px-4">Lưu</button>
+                                                    <button v-on:click="updateProfile" type="button" class="btn btn-primary px-4">Lưu</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -259,7 +259,8 @@
                                     <label for="">Mật khẩu cũ</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input v-model="passwordForm.current_password" type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
+                                    <input v-model="passwordForm.current_password" type="text"
+                                        placeholder="Nhập mật khẩu cũ" class="form-control">
                                 </div>
                             </div>
 
@@ -268,7 +269,8 @@
                                     <label for="">Mật khẩu mới</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input v-model="passwordForm.new_password" type="password" placeholder="Nhập mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.new_password" type="password"
+                                        placeholder="Nhập mật khẩu mới" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -276,7 +278,8 @@
                                     <label for="">Nhập lại Mật khẩu mới </label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input v-model="passwordForm.confirm_new_password" type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.confirm_new_password" type="password"
+                                        placeholder="Nhập lại mật khẩu mới" class="form-control">
                                 </div>
                             </div>
                             <button v-on:click="doiMatKhau" class="btn btn-primary">Lưu</button>
@@ -432,6 +435,34 @@ export default {
                     }
                 });
         },
+        updateProfile() {
+            axios
+                .post("http://127.0.0.1:8000/api/khach-hang/profile/update", this.profile, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        //this.profile = res.data.data;
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.getDataProfile()
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Lấy lỗi đầu tiên từ Laravel validation
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else {
+                        this.$toast.error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                });
+        }
     }
 }
 </script>
