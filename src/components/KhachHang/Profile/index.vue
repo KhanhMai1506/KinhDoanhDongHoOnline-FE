@@ -101,7 +101,7 @@
                                     <h2>Địa chỉ nhận hàng</h2>
                                 </div>
                                 <div class="col-5 text-end">
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#themModal">
                                         <i class="fa-solid fa-plus"></i>Thêm địa chỉ
                                     </button>
@@ -122,12 +122,13 @@
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-2 text-end">
                                                 <div class="row mb-2 mt-3">
-                                                    <button v-on:click="delete_dia_chi = value" type="button" class="btn btn-danger px-5 radius-30"
-                                                        data-bs-toggle="modal"
+                                                    <button v-on:click="delete_dia_chi = value" type="button"
+                                                        class="btn btn-danger px-5 radius-30" data-bs-toggle="modal"
                                                         data-bs-target="#deleteModal">Xoá</button>
                                                 </div>
                                                 <div class="row">
-                                                    <button v-on:click="Object.assign(update_dia_chi, value)" type="button" class="btn btn-primary px-5 radius-30"
+                                                    <button v-on:click="Object.assign(update_dia_chi, value)"
+                                                        type="button" class="btn btn-primary px-5 radius-30"
                                                         data-bs-toggle="modal" data-bs-target="#capnhatModal">Cập
                                                         Nhật</button>
                                                 </div>
@@ -162,13 +163,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Đóng</button>
                                             <button v-on:click="deleteDiaChi()" type="button" class="btn btn-danger"
-                                                data-bs-dismiss="modal">Xoá</button>
+                                                data-bs-dismiss="modal">Xác Nhận</button>
                                         </div>
                                     </div>
                                 </div>
@@ -326,6 +326,13 @@ export default {
                 });
         },
         createDiaChi() {
+            const { ten_nguoi_nhan, so_dien_thoai, dia_chi } = this.create_dia_chi;
+
+            if (!ten_nguoi_nhan && !so_dien_thoai && !dia_chi) {
+                this.$toast.error("Vui lòng nhập đầy đủ tên người nhận, số điện thoại và địa chỉ.");
+                return;
+            }
+
             axios
                 .post("http://127.0.0.1:8000/api/khach-hang/dia-chi/create", this.create_dia_chi, {
                     headers: {
@@ -342,6 +349,15 @@ export default {
                         this.$toast.error(thong_bao);
                     }
                 })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Lấy lỗi đầu tiên từ Laravel validation
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else {
+                        this.$toast.error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                });
         },
         deleteDiaChi() {
             axios
@@ -378,6 +394,15 @@ export default {
                         this.$toast.error(thong_bao);
                     }
                 })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Lấy lỗi đầu tiên từ Laravel validation
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else {
+                        this.$toast.error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                });
         },
     }
 }
