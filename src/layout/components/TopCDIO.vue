@@ -5,24 +5,11 @@
                 <router-link :to="'/'">
                     <a class="dropdown-item" :href="'/'">
                         <div class="topbar-logo-header d-flex align-items-center">
-                            <img src="/src/assets/images/logo.png" class="logo-icon" style="width: 120px;"
+                            <img src="/src/assets/images/logo.png" class="logo-icon" style="width: 130px;"
                                 alt="logo icon">
                         </div>
                     </a>
                 </router-link>
-                <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
-                <!-- <div class="search-bar flex-grow-1">
-                    <div class="position-relative search-bar-box input-group w-100">
-                        <input type="text" class="form-control search-control ..." placeholder="Search..."
-                            v-model="tu_khoa" v-on:keyup.enter="timKiem()"> <span
-                            class="position-absolute top-50 search-show translate-middle-y"><i
-                                class='bx bx-search'></i></span>
-                        <span class="position-absolute top-50 search-close translate-middle-y"><i
-                                class='bx bx-x'></i></span>
-                        <button class="btn btn-outline-secondary radius-30" type="button" v-on:click="timKiem()">Tìm
-                            Kiếm</button>
-                    </div>
-                </div> -->
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative search-bar-box w-100">
                         <input type="text" class="form-control search-control rounded-pill" style="border: 1px solid gray;" placeholder="Type to search..."
@@ -95,7 +82,7 @@
                         </router-link>
                         <router-link to="/khach-hang/dang-ky">
                             <button type="button" class="btn btn-dark px-5 radius-30 d-flex align-items-center"><i
-                                    class="fa-solid fa-arrow-right-to-bracket me-2"></i>Đăng Ký</button>
+                                    class="fa-solid fa-arrow-right-to-bracket"></i>Đăng Ký</button>
                         </router-link>
                     </div>
                 </template>
@@ -138,7 +125,7 @@ export default {
         },
         checkLogin() {
             axios
-                .get('http://127.0.0.1:8000/api/kiem-tra-khachhang', {
+                .get('http://127.0.0.1:8000/api/kiem-tra-khach-hang', {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
                     }
