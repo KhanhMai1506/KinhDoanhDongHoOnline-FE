@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -15,3 +16,4 @@ app.component("blank-layout", Blank);
 app.component("cdio-layout", Cdio);
 app.component("admin-layout", Admin);
 app.mount("#app")
+

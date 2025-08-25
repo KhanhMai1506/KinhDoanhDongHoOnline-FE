@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" height="480" width="640" id="flag-icon-css-th">
   <g fill-rule="evenodd">
     <path fill="#fff" d="M0 0h640v480H0z"/>
@@ -5,3 +6,12 @@
     <path fill="#e70000" d="M0 .042h640v82.5H0zm0 399.961h640v80H0z"/>
   </g>
 </svg>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" height="480" width="640" id="flag-icon-css-th">
+  <g fill-rule="evenodd">
+    <path fill="#fff" d="M0 0h640v480H0z"/>
+    <path fill="#001b9a" d="M0 162.544h640v160.003H0z"/>
+    <path fill="#e70000" d="M0 .042h640v82.5H0zm0 399.961h640v80H0z"/>
+  </g>
+</svg>
+>>>>>>> bb7e0d4cd30f01c2216798ba2807069a72459bac

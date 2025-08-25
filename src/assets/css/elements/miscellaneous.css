@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 	===============================
 			@Import	Function
@@ -14,3 +15,21 @@
 .display-4 {
   word-wrap: break-word;
   font-size: 45px; }
+=======
+/*
+	===============================
+			@Import	Function
+	===============================
+*/
+/*
+	===============================
+			@Import	Mixins
+	===============================
+*/
+.jumbotron p {
+  text-align: left; }
+
+.display-4 {
+  word-wrap: break-word;
+  font-size: 45px; }
+>>>>>>> bb7e0d4cd30f01c2216798ba2807069a72459bac

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 	===============================
 			@Import	Function
@@ -13,3 +14,20 @@
 
 .btn {
   margin-right: 5px; }
+=======
+/*
+	===============================
+			@Import	Function
+	===============================
+*/
+/*
+	===============================
+			@Import	Mixins
+	===============================
+*/
+.widget-content .row.padding35 .col-md-4 {
+  margin-bottom: 20px; }
+
+.btn {
+  margin-right: 5px; }
+>>>>>>> bb7e0d4cd30f01c2216798ba2807069a72459bac

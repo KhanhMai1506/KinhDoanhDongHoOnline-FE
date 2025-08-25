@@ -39,7 +39,7 @@
                 </li>
                 <li class="nav-item">
                     <router-link :to="'/tu-van'">
-                        <a class="nav-link" :href="'/'">
+                        <a class="nav-link" :href="'/tu-van'">
                             <div class="parent-icon"><i class="fa-brands fa-rocketchat"></i>
                             </div>
                             <div class="menu-title">Tư Vấn</div>
@@ -64,7 +64,7 @@ export default {
     methods: {
         loadDataDanhMuc() {
             axios
-                .get("http://127.0.0.1:8000/api/danh-muc/data-open")
+                .get("http://127.0.0.1:8000/api/danh-muc")
                 .then((res) => {
                     this.list_danh_muc = res.data.data;
                 });

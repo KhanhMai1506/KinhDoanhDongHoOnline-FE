@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHistory } from "vue-router";
 import kiemTraKhachHang from "./kiemTraKhachHang";
 import kiemTraAdmin from "./kiemTraAdmin";
@@ -50,6 +51,7 @@ const routes = [
         meta: { layout: 'blank' }
     },
 
+    
     {
         path: '/khach-hang/quen-mat-khau',
         component: () => import('../components/KhachHang/QuenMatKhau/index.vue'),
@@ -82,6 +84,7 @@ const routes = [
         meta: { layout: 'cdio' },
         beforeEnter: kiemTraKhachHang
     },
+
     {
         path: '/admin/dang-nhap',
         component: () => import('../components/Admin/DangNhap/index.vue'),
@@ -138,6 +141,7 @@ const routes = [
         meta: { layout: 'admin' },
         beforeEnter: kiemTraAdmin
     },
+
 ]
 
 const router = createRouter({
