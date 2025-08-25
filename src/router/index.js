@@ -1,6 +1,7 @@
 
 import { createRouter, createWebHistory } from "vue-router";
 import kiemTraKhachHang from "./kiemTraKhachHang";
+import kiemTraAdmin from "./kiemTraAdmin";
 
 const routes = [
     {
@@ -12,6 +13,12 @@ const routes = [
     {
         path: '/lien-he',
         component: () => import('../components/LienHe/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+
+    {
+        path: '/tu-van',
+        component: () => import('../components/ChatBot/index.vue'),
         meta: { layout: 'cdio' },
     },
 
@@ -74,15 +81,65 @@ const routes = [
     {
         path: '/khach-hang/don-hang',
         component: () => import('../components/KhachHang/DonHang/index.vue'),
-        meta: { layout: 'client' },
+        meta: { layout: 'cdio' },
         beforeEnter: kiemTraKhachHang
     },
 
     {
-        path: '/tu-van',
-        component: () => import('../components/Chatbot/index.vue'),
-        meta: { layout: 'cdio' },
-        beforeEnter: kiemTraKhachHang
+        path: '/admin/dang-nhap',
+        component: () => import('../components/Admin/DangNhap/index.vue'),
+        meta: { layout: 'blank' }
+    },
+
+    {
+        path: '/admin/danh-muc',
+        component: () => import('../components/Admin/DanhMuc/index.vue'),
+        meta: { layout: 'admin' }
+    },
+
+    {
+        path: '/admin/khach-hang',
+        component: () => import('../components/Admin/KhachHang/index.vue'),
+        meta: { layout: 'admin' }
+    },
+
+    {
+        path: '/admin/don-hang',
+        component: () => import('../components/Admin/DonHang/index.vue'),
+        meta: { layout: 'admin' }
+    },
+
+    {
+        path: '/admin/phan-quyen',
+        component: () => import('../components/Admin/PhanQuyen/index.vue'),
+        meta: { layout: 'admin' }
+    },
+
+    {
+        path: '/admin/san-pham',
+        component: () => import('../components/Admin/SanPham/index.vue'),
+        meta: { layout: 'admin' }
+    },
+
+    {
+        path: '/admin/profile',
+        component: () => import('../components/Admin/Profile/index.vue'),
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
+    },
+
+    {
+        path: '/admin/ma-giam-gia',
+        component: () => import('../components/Admin/MaGiamGia/index.vue'),
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
+    },
+
+    {
+        path: '/admin/tu-van',
+        component: () => import('../components/Admin/ChamSocKhachHang/index.vue'),
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
     },
 
 ]

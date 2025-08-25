@@ -21,14 +21,12 @@
                 <p class="mt-3 text-muted">{{ san_pham.mo_ta_ngan }}</p>
 
                 <!-- Số lượng -->
-                <div class="d-flex align-items-center my-3">
-                    <span class="me-2">Số lượng:</span>
-                    <button v-on:click="tru()" class="btn btn-outline-secondary btn-sm"
-                        @click="decreaseQuantity">-</button>
-                    <input v-on:change="doi()" type="text" class="form-control text-center mx-2" style="width: 60px;"
-                        v-model="san_pham.so_luong_mua" readonly>
-                    <button v-on:click="cong()" class="btn btn-outline-secondary btn-sm"
-                        @click="increaseQuantity">+</button>
+                <div class="input-group input-spinner d-flex justify-content-center flex-row"
+                    style="flex-wrap: nowrap; width: 120px;">
+                    <button v-on:click="tru()" class="btn btn-white" type="button">−</button>
+                    <input v-on:change="doi()" type="text" v-model="san_pham.so_luong_mua"
+                        class="form-control text-center">
+                    <button v-on:click="cong()" class="btn btn-white" type="button">+</button>
                 </div>
 
                 <!-- Nút hành động -->
@@ -168,11 +166,11 @@ export default {
 </script>
 <style scoped>
 .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 </style>
