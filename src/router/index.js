@@ -44,6 +44,7 @@ const routes = [
         meta: { layout: 'blank' }
     },
 
+    
     {
         path: '/khach-hang/quen-mat-khau',
         component: () => import('../components/KhachHang/QuenMatKhau/index.vue'),
@@ -83,6 +84,7 @@ const routes = [
         meta: { layout: 'cdio' },
         beforeEnter: kiemTraKhachHang
     },
+
 ]
 
 const router = createRouter({

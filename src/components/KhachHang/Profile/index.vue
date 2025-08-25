@@ -42,9 +42,9 @@
                                     <div class="card flex-fill">
                                         <div class="card-body">
                                             <div class="d-flex flex-column align-items-center text-center">
-                                                <img src="https://png.pngtree.com/png-clipart/20230311/ourlarge/pngtree-sad-boy-chibi-character-png-image_6644700.png"
-                                                    style="width: 150px; height: 150px;" alt="Admin"
-                                                    class="rounded-circle p-1 bg-primary">
+                                                <img :src="profile.hinh_anh || 'https://i.pravatar.cc/150'"
+                                                    style="width: 150px; height: 150px;" alt="Avatar"
+                                                    class="rounded-circle p-1 bg-primary" />
                                                 <div class="mt-3">
                                                     <h4>{{ profile.ho_va_ten }}</h4>
                                                     <p class="text-secondary mb-1">Khách Hàng</p>
@@ -79,14 +79,15 @@
                                                     <h6 class="mb-0">Số Điện Thoại</h6>
                                                 </div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <input  v-model="profile.so_dien_thoai" type="text"
+                                                    <input v-model="profile.so_dien_thoai" type="text"
                                                         class="form-control" placeholder="Nhập số điện thoại">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-3"></div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <button v-on:click="updateProfile" type="button" class="btn btn-primary px-4">Lưu</button>
+                                                    <button v-on:click="updateProfile" type="button"
+                                                        class="btn btn-primary px-4">Lưu</button>
                                                 </div>
                                             </div>
                                         </div>
