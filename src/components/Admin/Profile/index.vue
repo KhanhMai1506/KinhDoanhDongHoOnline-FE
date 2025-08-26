@@ -106,7 +106,7 @@
                                     <label for="">Mật khẩu cũ</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
+                                    <input v-model="passwordForm.current_password" type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
                                 </div>
                             </div>
 
@@ -115,7 +115,7 @@
                                     <label for="">Mật khẩu mới</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="password" placeholder="Nhập mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.new_password" type="password" placeholder="Nhập mật khẩu mới" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -123,10 +123,10 @@
                                     <label for="">Nhập lại Mật khẩu mới </label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.confirm_new_password" type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
                                 </div>
                             </div>
-                            <button class="btn btn-primary">Lưu</button>
+                            <button v-on:click="doiMatKhau" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -140,6 +140,11 @@ export default {
     data() {
         return {
             profile: {},
+            passwordForm: {
+                current_password: '',
+                new_password: '',
+                confirm_new_password: ''
+            },
         }
     },
     mounted() {
@@ -156,7 +161,30 @@ export default {
                 .then((res) => {
                     this.profile = res.data.data;
                 })
-        }
+        },
+
+        doiMatKhau() {
+            axios
+                .post("http://127.0.0.1:8000/api/admin/doi-mat-khau", this.passwordForm, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_admin")
+                    }
+                })
+                .then((res) => {
+                    this.$toast.success(res.data.message);
+                    this.passwordForm = { current_password: '', new_password: '', confirm_new_password: '' };
+                })
+                .catch(error => {
+                    if (error.response && error.response.data.errors) {
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else if (error.response && error.response.data.message) {
+                        this.$toast.error(error.response.data.message);
+                    } else {
+                        this.$toast.error("Có lỗi xảy ra khi đổi mật khẩu.");
+                    }
+                });
+        },
     }
 }
 </script>
