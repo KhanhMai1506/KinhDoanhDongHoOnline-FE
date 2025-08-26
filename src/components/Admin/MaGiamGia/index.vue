@@ -1,65 +1,10 @@
 <template>
-    <div class="modal fade" id="capnhatDM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật Mã Giảm Giá</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <label>Mã Code</label>
-                        <input v-model="edit_ma_giam_gia.code" type="text" class="form-control mt-2">
-                    </div>
-                    <div class="mb-2">
-                        <label>Thời Gian Bắt Đầu</label>
-                        <input v-model="edit_ma_giam_gia.ngay_bat_dau" type="date" class="form-control mt-2">
-                    </div>
-                    <div class="mb-2">
-                        <label>Thời Gian Kết Thúc</label>
-                        <input v-model="edit_ma_giam_gia.ngay_ket_thuc" type="date" class="form-control mt-2">
-                    </div>
-                    <div class="mb-2">
-                        <label>Loại Giảm</label>
-                        <select v-model="edit_ma_giam_gia.loai_giam_gia" class="form-control mt-2">
-                            <option value="0">Giảm %</option>
-                            <option value="1">Tiền Mặt</option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label>Số Giảm Giá</label>
-                        <input v-model="edit_ma_giam_gia.so_giam_gia" type="number" class="form-control mt-2">
-                    </div>
-                    <div class="mb-2">
-                        <label>Số Tiền Tối Đa</label>
-                        <input v-model="edit_ma_giam_gia.so_tien_toi_da" type="number" class="form-control mt-2">
-                    </div>
-                    <div class="mb-2">
-                        <label>Đơn Hàng Tối Thiểu</label>
-                        <input v-model="edit_ma_giam_gia.don_hang_toi_thieu" type="number" class="form-control mt-2">
-                    </div>
-                    <div class="mb-2">
-                        <label>Tình trạng</label>
-                        <select v-model="edit_ma_giam_gia.tinh_trang" class="form-control mt-2">
-                            <option value="0">Tạm Tắt</option>
-                            <option value="1">Hiển Thị</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button v-on:click="capnhatMaGiamGia()" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">Cập
-                        nhật</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-header">
-                    <h6><b>THÊM MỚI MÃ GIẢM GIÁ</b></h6>
+                    <h5><b class="align-middle">THÊM MỚI MÃ GIẢM GIÁ</b></h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-2">
@@ -109,10 +54,10 @@
         <div class="col-lg-9">
             <div class="card">
                 <div class="card-header">
-                    <h6><b>DANH SÁCH MÃ GIẢM GIÁ</b></h6>
+                    <h5><b class="align-middle">DANH SÁCH MÃ GIẢM GIÁ</b></h5>
                 </div>
                 <div class="card-body table-responsive">
-                    <table class="table table-bordered table-hover ">
+                    <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th class="text-center">#</th>
@@ -183,6 +128,63 @@
                         <button v-on:click="xoaMaGiamGia()" type="button" class="btn btn-primary"
                             data-bs-dismiss="modal">Xác
                             nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="capnhatDM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Mã Giảm Giá</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <label>Mã Code</label>
+                            <input v-model="edit_ma_giam_gia.code" type="text" class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Thời Gian Bắt Đầu</label>
+                            <input v-model="edit_ma_giam_gia.ngay_bat_dau" type="date" class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Thời Gian Kết Thúc</label>
+                            <input v-model="edit_ma_giam_gia.ngay_ket_thuc" type="date" class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Loại Giảm</label>
+                            <select v-model="edit_ma_giam_gia.loai_giam_gia" class="form-control mt-2">
+                                <option value="0">Giảm %</option>
+                                <option value="1">Tiền Mặt</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label>Số Giảm Giá</label>
+                            <input v-model="edit_ma_giam_gia.so_giam_gia" type="number" class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Số Tiền Tối Đa</label>
+                            <input v-model="edit_ma_giam_gia.so_tien_toi_da" type="number" class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Đơn Hàng Tối Thiểu</label>
+                            <input v-model="edit_ma_giam_gia.don_hang_toi_thieu" type="number"
+                                class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Tình trạng</label>
+                            <select v-model="edit_ma_giam_gia.tinh_trang" class="form-control mt-2">
+                                <option value="0">Tạm Tắt</option>
+                                <option value="1">Hiển Thị</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button v-on:click="capnhatMaGiamGia()" type="button" class="btn btn-primary"
+                            data-bs-dismiss="modal">Cập
+                            nhật</button>
                     </div>
                 </div>
             </div>

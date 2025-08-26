@@ -112,13 +112,6 @@ const routes = [
     },
 
     {
-        path: '/admin/phan-quyen',
-        component: () => import('../components/Admin/PhanQuyen/index.vue'),
-        meta: { layout: 'admin' },
-        beforeEnter: kiemTraAdmin
-    },
-
-    {
         path: '/admin/san-pham',
         component: () => import('../components/Admin/SanPham/index.vue'),
         meta: { layout: 'admin' },
@@ -140,8 +133,8 @@ const routes = [
     },
 
     {
-        path: '/admin/tu-van',
-        component: () => import('../components/Admin/ChamSocKhachHang/index.vue'),
+        path: '/admin/danh-gia',
+        component: () => import('../components/Admin/DanhGia/index.vue'),
         meta: { layout: 'admin' },
         beforeEnter: kiemTraAdmin
     },
