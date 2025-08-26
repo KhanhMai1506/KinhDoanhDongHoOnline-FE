@@ -42,9 +42,9 @@
                                     <div class="card flex-fill">
                                         <div class="card-body">
                                             <div class="d-flex flex-column align-items-center text-center">
-                                                <img src="https://png.pngtree.com/png-clipart/20230311/ourlarge/pngtree-sad-boy-chibi-character-png-image_6644700.png"
-                                                    style="width: 150px; height: 150px;" alt="Admin"
-                                                    class="rounded-circle p-1 bg-primary">
+                                                <img :src="profile.hinh_anh || 'https://i.pravatar.cc/150'"
+                                                    style="width: 150px; height: 150px;" alt="Avatar"
+                                                    class="rounded-circle p-1 bg-primary" />
                                                 <div class="mt-3">
                                                     <h4>{{ profile.ho_va_ten }}</h4>
                                                     <p class="text-secondary mb-1">Khách Hàng</p>
@@ -86,7 +86,8 @@
                                             <div class="row">
                                                 <div class="col-lg-3"></div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <button type="button" class="btn btn-primary px-4">Lưu</button>
+                                                    <button v-on:click="updateProfile" type="button"
+                                                        class="btn btn-primary px-4">Lưu</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,7 +102,7 @@
                                     <h2>Địa chỉ nhận hàng</h2>
                                 </div>
                                 <div class="col-5 text-end">
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#themModal">
                                         <i class="fa-solid fa-plus"></i>Thêm địa chỉ
                                     </button>
@@ -122,12 +123,13 @@
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-2 text-end">
                                                 <div class="row mb-2 mt-3">
-                                                    <button v-on:click="delete_dia_chi = value" type="button" class="btn btn-danger px-5 radius-30"
-                                                        data-bs-toggle="modal"
+                                                    <button v-on:click="delete_dia_chi = value" type="button"
+                                                        class="btn btn-danger px-5 radius-30" data-bs-toggle="modal"
                                                         data-bs-target="#deleteModal">Xoá</button>
                                                 </div>
                                                 <div class="row">
-                                                    <button v-on:click="Object.assign(update_dia_chi, value)" type="button" class="btn btn-primary px-5 radius-30"
+                                                    <button v-on:click="Object.assign(update_dia_chi, value)"
+                                                        type="button" class="btn btn-primary px-5 radius-30"
                                                         data-bs-toggle="modal" data-bs-target="#capnhatModal">Cập
                                                         Nhật</button>
                                                 </div>
@@ -162,13 +164,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Đóng</button>
                                             <button v-on:click="deleteDiaChi()" type="button" class="btn btn-danger"
-                                                data-bs-dismiss="modal">Xoá</button>
+                                                data-bs-dismiss="modal">Xác
+                                                Nhận</button>
                                         </div>
                                     </div>
                                 </div>
@@ -258,7 +260,8 @@
                                     <label for="">Mật khẩu cũ</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
+                                    <input v-model="passwordForm.current_password" type="text"
+                                        placeholder="Nhập mật khẩu cũ" class="form-control">
                                 </div>
                             </div>
 
@@ -267,7 +270,8 @@
                                     <label for="">Mật khẩu mới</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="password" placeholder="Nhập mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.new_password" type="password"
+                                        placeholder="Nhập mật khẩu mới" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -275,10 +279,11 @@
                                     <label for="">Nhập lại Mật khẩu mới </label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.confirm_new_password" type="password"
+                                        placeholder="Nhập lại mật khẩu mới" class="form-control">
                                 </div>
                             </div>
-                            <button class="btn btn-primary">Lưu</button>
+                            <button v-on:click="doiMatKhau" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -291,6 +296,11 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            passwordForm: {
+                current_password: '',
+                new_password: '',
+                confirm_new_password: ''
+            },
             profile: {},
             list_dia_chi: [],
             create_dia_chi: {},
@@ -303,6 +313,28 @@ export default {
         this.layDiaChi();
     },
     methods: {
+        doiMatKhau() {
+            axios
+                .post("http://127.0.0.1:8000/api/khach-hang/doi-mat-khau", this.passwordForm, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                    }
+                })
+                .then((res) => {
+                    this.$toast.success(res.data.message);
+                    this.passwordForm = { current_password: '', new_password: '', confirm_new_password: '' };
+                })
+                .catch(error => {
+                    if (error.response && error.response.data.errors) {
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else if (error.response && error.response.data.message) {
+                        this.$toast.error(error.response.data.message);
+                    } else {
+                        this.$toast.error("Có lỗi xảy ra khi đổi mật khẩu.");
+                    }
+                });
+        },
         getDataProfile() {
             axios
                 .get("http://127.0.0.1:8000/api/khach-hang/profile/data", {
@@ -326,6 +358,13 @@ export default {
                 });
         },
         createDiaChi() {
+            const { ten_nguoi_nhan, so_dien_thoai, dia_chi } = this.create_dia_chi;
+
+            if (!ten_nguoi_nhan && !so_dien_thoai && !dia_chi) {
+                this.$toast.error("Vui lòng nhập đầy đủ tên người nhận, số điện thoại và địa chỉ.");
+                return;
+            }
+
             axios
                 .post("http://127.0.0.1:8000/api/khach-hang/dia-chi/create", this.create_dia_chi, {
                     headers: {
@@ -342,6 +381,15 @@ export default {
                         this.$toast.error(thong_bao);
                     }
                 })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Lấy lỗi đầu tiên từ Laravel validation
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else {
+                        this.$toast.error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                });
         },
         deleteDiaChi() {
             axios
@@ -378,7 +426,44 @@ export default {
                         this.$toast.error(thong_bao);
                     }
                 })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Lấy lỗi đầu tiên từ Laravel validation
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else {
+                        this.$toast.error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                });
         },
+        updateProfile() {
+            axios
+                .post("http://127.0.0.1:8000/api/khach-hang/profile/update", this.profile, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        //this.profile = res.data.data;
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.getDataProfile()
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        // Lấy lỗi đầu tiên từ Laravel validation
+                        const firstError = Object.values(error.response.data.errors)[0][0];
+                        this.$toast.error(firstError);
+                    } else {
+                        this.$toast.error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                });
+        }
     }
 }
 </script>
