@@ -45,15 +45,6 @@
 							<div class="menu-title">Đơn Hàng</div>
 						</a>
 					</router-link>
-				</li>
-				<li class="nav-item">
-					<router-link to="/admin/phan-quyen">
-						<a class="nav-link" href="/admin/phan-quyen">
-							<div class="parent-icon"><i class="fa-solid fa-user"></i>
-							</div>
-							<div class="menu-title">Phân Quyền</div>
-						</a>
-					</router-link>
 				</li>	
 				<li class="nav-item">
 					<router-link to="/admin/ma-giam-gia">
@@ -65,11 +56,11 @@
 					</router-link>
 				</li>		
 				<li class="nav-item">
-                    <router-link :to="'/admin/tu-van'">
+                    <router-link :to="'/admin/danh-gia'">
                         <a class="nav-link" :href="'/'">
                             <div class="parent-icon"><i class="fa-brands fa-rocketchat"></i>
                             </div>
-                            <div class="menu-title">Tư Vấn</div>
+                            <div class="menu-title">Đánh Giá</div>
                         </a>
                     </router-link>
                 </li>	

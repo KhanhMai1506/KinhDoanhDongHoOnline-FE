@@ -12,8 +12,9 @@
                 </router-link>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative search-bar-box w-100">
-                        <input type="text" class="form-control search-control rounded-pill" style="border: 1px solid gray;" placeholder="Type to search..."
-                            v-model="tu_khoa" v-on:keyup.enter="timKiem()">
+                        <input type="text" class="form-control search-control rounded-pill"
+                            style="border: 1px solid gray;" placeholder="Type to search..." v-model="tu_khoa"
+                            v-on:keyup.enter="timKiem()">
                         <span class="position-absolute top-50 search-show translate-middle-y">
                             <i class="bx bx-search"></i>
                         </span>
@@ -31,7 +32,8 @@
                             </li>
                             <li class="nav-item dropdown dropdown-large">
                                 <router-link to="/khach-hang/gio-hang">
-                                    <a class="nav-link position-relative"> <span class="alert-count">N</span>
+                                    <a class="nav-link position-relative"> <span class="alert-count">{{
+                                            this.gio_hang_count }}</span>
                                         <i class='bx bx-cart-alt'></i>
                                     </a>
                                 </router-link>
@@ -98,11 +100,13 @@ export default {
             auth: false,
             name_kh: '',
             tu_khoa: '',
+            gio_hang_count: 0,
         }
     },
     mounted() {
         this.checkLogin();
-        this.name_kh = localStorage.getItem('ten_kh')
+        this.name_kh = localStorage.getItem('ten_kh');
+        this.laySoLuongGioHang();
     },
     methods: {
         dangXuat() {
@@ -136,6 +140,20 @@ export default {
                     }
                 })
         },
+        laySoLuongGioHang() {
+            axios
+                .get('http://127.0.0.1:8000/api/gio-hang/dem', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.gio_hang_count = res.data.so_luong;
+                        console.log(res.data.so_luong);
+                    }
+                });
+        },
         timKiem() {
             this.$router.push({
                 name: 'name_tim_kiem',
@@ -147,5 +165,4 @@ export default {
     },
 }
 </script>
-<style>
-</style>
+<style></style>

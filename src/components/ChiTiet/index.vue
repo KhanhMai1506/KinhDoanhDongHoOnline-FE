@@ -57,6 +57,88 @@
                 </template>
             </div>
         </div>
+        <!-- Thêm dưới phần sản phẩm đề xuất -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card p-3 mb-3 mt-5">
+                    <p>
+                        ⭐ <b style="font-size: 20px;">{{ thong_ke_danh_gia.trung_binh }}</b> / 5
+                        ({{ thong_ke_danh_gia.tong }} lượt đánh giá)
+                    </p>
+
+                    <div v-for="sao in [5, 4, 3, 2, 1]" :key="sao" class="d-flex align-items-center mb-1">
+                        <span class="me-2">{{ sao }} ⭐</span>
+                        <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                            <div class="progress-bar bg-warning" role="progressbar"
+                                :style="{ width: ((thong_ke_danh_gia.theo_sao[sao] || 0) / thong_ke_danh_gia.tong * 100) + '%' }">
+                            </div>
+                        </div>
+                        <small>{{ thong_ke_danh_gia.theo_sao[sao] || 0 }}</small>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#rateModal">
+                            Đánh Giá
+                        </button>
+                    </div>
+                    <hr>
+                    <div class="mt-2">
+                        <h5>DANH SÁCH ĐÁNH GIÁ</h5>
+                        <!-- Danh sách đánh giá -->
+                        <div v-if="danh_sach_danh_gia.length" style="font-size: 16px;">
+                            <div v-for="(dg, index) in danh_sach_danh_gia" :key="index" class="border-bottom py-2">
+                                <small class="text-muted text-middle">{{ dg.khach_hang?.ho_va_ten }} | {{
+                                    formatDate(dg.created_at)
+                                }}</small>
+                                <div class="d-flex align-items-center">
+                                    <div class="text-warning">
+                                        <span v-for="i in dg.so_sao" :key="i">★</span>
+                                        <span v-for="i in (5 - dg.so_sao)" :key="'x' + i">☆</span>
+                                    </div>
+                                </div>
+                                <p class="mb-1">{{ dg.noi_dung }}</p>
+                                <div v-if="dg.phan_hoi" class="bg-light p-2 rounded border mt-2">
+                                    <small class="text-muted"><b>Phản hồi từ Admin:</b></small>
+                                    <p class="mb-0">{{ dg.phan_hoi }}</p>
+                                    <small class="text-muted">{{ formatDate(dg.phan_hoi_at) }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="rateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Viết Đánh Giá</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2 d-flex align-items-center">
+                            <label class="me-2 mb-0" style="font-size: 16px;">Số sao:</label>
+                            <select v-model="danh_gia.so_sao" class="form-select w-auto">
+                                <option v-for="i in 5" :key="i" :value="i">{{ i }} sao</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <textarea v-model="danh_gia.noi_dung" rows="3" class="form-control"
+                                placeholder="Nhập nội dung đánh giá..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button @click="guiDanhGia" class="btn btn-dark">Gửi đánh giá</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
     </div>
 </template>
 <style></style>
@@ -70,20 +152,79 @@ export default {
         return {
             id_san_pham: this.$route.params.id_san_pham,
             san_pham: {},
-            san_pham_de_xuat: []
+            san_pham_de_xuat: [],
+            danh_sach_danh_gia: [],
+            danh_gia: {
+                so_sao: 5,
+                noi_dung: ""
+            },
+            thong_ke_danh_gia: {
+                tong: 0,
+                trung_binh: 0,
+                theo_sao: {}
+            }
         }
     },
     beforeRouteUpdate(to, from, next) {
         this.id_san_pham = to.params.id_san_pham;
         this.layThongTinSanPham();
         this.laySanPhamDeXuat();
+        this.layDanhGia();
+        this.layThongKeDanhGia();
         next();
     },
     mounted() {
         this.layThongTinSanPham();
         this.laySanPhamDeXuat(this.id_san_pham);
+        this.layDanhGia();
+        this.layThongKeDanhGia();
     },
     methods: {
+        layThongKeDanhGia() {
+            axios.get("http://127.0.0.1:8000/api/danh-gia/thong-ke/" + this.id_san_pham)
+                .then(res => {
+                    if (res.data.status) {
+                        this.thong_ke_danh_gia = res.data;
+                    }
+                });
+        },
+        formatDate(dateString) {
+            if (!dateString) return "";
+            const date = new Date(dateString);
+            return date.toLocaleDateString("vi-VN", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            });
+        },
+        layDanhGia() {
+            axios.get("http://127.0.0.1:8000/api/danh-gia/" + this.id_san_pham)
+                .then(res => {
+                    if (res.data.status) {
+                        this.danh_sach_danh_gia = res.data.data;
+                    }
+                });
+        },
+        guiDanhGia() {
+            axios.post("http://127.0.0.1:8000/api/danh-gia/create", {
+                id_san_pham: this.id_san_pham,
+                so_sao: this.danh_gia.so_sao,
+                noi_dung: this.danh_gia.noi_dung
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                }
+            })
+                .then(res => {
+                    if (res.data.status) {
+                        this.$toast.success("Gửi đánh giá thành công!");
+                        this.danh_gia.noi_dung = "";
+                        this.layDanhGia();
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                });
+        },
         layThongTinSanPham() {
             axios
                 .get('http://127.0.0.1:8000/api/chi-tiet-san-pham/' + this.id_san_pham)

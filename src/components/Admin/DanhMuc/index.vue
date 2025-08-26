@@ -3,7 +3,7 @@
         <div class="col-lg-5">
             <div class="card">
                 <div class="card-header">
-                    <h5><b>THÊM MỚI DANH MỤC</b></h5>
+                    <h5><b class="align-middle">THÊM MỚI DANH MỤC</b></h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-2">
@@ -37,7 +37,7 @@
         <div class="col-lg-7">
             <div class="card">
                 <div class="card-header">
-                    <h5><b>DANH SÁCH DANH MỤC</b></h5>
+                    <h5><b class="align-middle">DANH SÁCH DANH MỤC</b></h5>
                 </div>
                 <div class="card-body table-responsive">
                     <table class="table table-bordered table-hover ">
@@ -104,7 +104,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật Danh Mục</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Danh Mục</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

@@ -91,31 +91,29 @@ const routes = [
     {
         path: '/admin/danh-muc',
         component: () => import('../components/Admin/DanhMuc/index.vue'),
-        meta: { layout: 'admin' }
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
     },
 
     {
         path: '/admin/khach-hang',
         component: () => import('../components/Admin/KhachHang/index.vue'),
-        meta: { layout: 'admin' }
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
     },
 
     {
         path: '/admin/don-hang',
         component: () => import('../components/Admin/DonHang/index.vue'),
-        meta: { layout: 'admin' }
-    },
-
-    {
-        path: '/admin/phan-quyen',
-        component: () => import('../components/Admin/PhanQuyen/index.vue'),
-        meta: { layout: 'admin' }
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
     },
 
     {
         path: '/admin/san-pham',
         component: () => import('../components/Admin/SanPham/index.vue'),
-        meta: { layout: 'admin' }
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
     },
 
     {
@@ -133,8 +131,8 @@ const routes = [
     },
 
     {
-        path: '/admin/tu-van',
-        component: () => import('../components/Admin/ChamSocKhachHang/index.vue'),
+        path: '/admin/danh-gia',
+        component: () => import('../components/Admin/DanhGia/index.vue'),
         meta: { layout: 'admin' },
         beforeEnter: kiemTraAdmin
     },

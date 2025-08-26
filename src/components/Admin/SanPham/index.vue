@@ -9,7 +9,7 @@
                             phẩm</button>
                     </div>
                     <div class="input-group mt-3 w-100">
-                        <input v-model="tim_kiem.noi_dung_tim" type="text"
+                        <input v-model="tim_kiem.noi_dung_tim" @keyup.enter="timKiem" type="text"
                             class="form-control search-control border border-2 border-secondary"
                             placeholder="Search...">
                         <span class="position-absolute top-50 search-show translate-middle-y" style="left: 15px;"><i
@@ -143,7 +143,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Thông Tin Sản Phẩm</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Sản Phẩm</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
