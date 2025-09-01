@@ -18,7 +18,7 @@ const routes = [
 
     {
         path: '/tu-van',
-        component: () => import('../components/ChatBot/index.vue'),
+        component: () => import('../components/Chatbot/index.vue'),
         meta: { layout: 'cdio' },
     },
 
@@ -50,7 +50,6 @@ const routes = [
         component: () => import('../components/KhachHang/DangNhap/index.vue'),
         meta: { layout: 'blank' }
     },
-
     
     {
         path: '/khach-hang/quen-mat-khau',

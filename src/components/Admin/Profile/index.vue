@@ -111,7 +111,7 @@
                                     <label for="">Mật khẩu cũ</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
+                                    <input v-model="passwordForm.current_password" type="text" placeholder="Nhập mật khẩu cũ" class="form-control">
                                 </div>
                             </div>
 
@@ -120,7 +120,7 @@
                                     <label for="">Mật khẩu mới</label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="password" placeholder="Nhập mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.new_password" type="password" placeholder="Nhập mật khẩu mới" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -128,10 +128,10 @@
                                     <label for="">Nhập lại Mật khẩu mới </label>
                                 </div>
                                 <div class="col-lg-3">
-                                    <input type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
+                                    <input v-model="passwordForm.confirm_new_password" type="password" placeholder="Nhập lại mật khẩu mới" class="form-control">
                                 </div>
                             </div>
-                            <button class="btn btn-primary">Lưu</button>
+                            <button v-on:click="doiMatKhau" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -145,6 +145,11 @@ export default {
     data() {
         return {
             profile: {},
+            passwordForm: {
+                current_password: '',
+                new_password: '',
+                confirm_new_password: ''
+            },
         }
     },
     mounted() {
