@@ -17,7 +17,7 @@
                             style="z-index: 1; outline: none; box-shadow: none;" v-on:click="timKiem()">Tìm Kiếm
                         </button>
                     </div>
-                </div> 
+                </div>
                 <template v-if="auth">
                     <div class="top-menu ms-3">
                         <ul class="navbar-nav align-items-center">
@@ -25,8 +25,8 @@
                                         class='bx bx-search'></i> </a>
                             </li>
                             <li class="nav-item dropdown dropdown-large"> <router-link to="/khach-hang/gio-hang"> <a
-                                        class="nav-link position-relative"> <span class="alert-count">{{ gio_hang_count }}</span> <i
-                                            class='bx bx-cart-alt'></i> </a> </router-link> </li>
+                                        class="nav-link position-relative"> <span class="alert-count">{{ gio_hang_count
+                                            }}</span> <i class='bx bx-cart-alt'></i> </a> </router-link> </li>
                         </ul>
                     </div>
                     <div class="user-box dropdown">
@@ -99,9 +99,15 @@ export default {
         this.loadUserFromStorage();
         this.laySoLuongGioHang();
         window.addEventListener("loginSuccess", this.handleLoginSuccess);
+        window.addEventListener("avatarUpdated", this.updateAvatarFromStorage);
+        window.addEventListener("gioHangUpdated", this.laySoLuongGioHang);
+        window.addEventListener("gioHangUpdated", this.laySoLuongGioHang); 
     },
     beforeUnmount() {
         window.removeEventListener("loginSuccess", this.handleLoginSuccess);
+        window.removeEventListener("avatarUpdated", this.updateAvatarFromStorage);
+        window.removeEventListener("gioHangUpdated", this.laySoLuongGioHang);
+        window.removeEventListener("gioHangUpdated", this.laySoLuongGioHang);
     },
     methods: {
         handleLoginSuccess(event) {
@@ -169,7 +175,7 @@ export default {
             this.$router.push({ name: "name_tim_kiem", params: { thong_tin: this.tu_khoa } });
         },
         laySoLuongGioHang() {
-            axios 
+            axios
                 .get('http://127.0.0.1:8000/api/gio-hang/dem', {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
@@ -181,6 +187,13 @@ export default {
                         console.log(res.data.so_luong);
                     }
                 });
+        },
+        updateAvatarFromStorage() {
+            const user = JSON.parse(localStorage.getItem("khach_hang"));
+            if (user) {
+                this.avatar = user.hinh_anh || "https://i.pinimg.com/736x/fa/7e/a6/fa7ea6ce4e90b794eef88dde93522dd6.jpg";
+                this.name_kh = user.ho_va_ten;
+            }
         },
     }
 };

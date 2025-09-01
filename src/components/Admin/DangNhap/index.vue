@@ -32,7 +32,7 @@
                                             <div class="input-group">
                                                 <div class="input-group-text bg-transparent"><i
                                                         class="fa-solid fa-lock"></i></div>
-                                                <input v-model="tai_khoan.password" type="password" class="form-control border-end-0">
+                                                <input v-model="tai_khoan.password" v-on:keyup.enter="xacNhanLogin()" type="password" class="form-control border-end-0">
                                             </div>
                                         </div>
                                         <div class="col-12">

@@ -86,6 +86,13 @@ const routes = [
     },
 
     {
+        path: '/khach-hang/thanh-toan',
+        component: () => import('../components/KhachHang/ThanhToan/index.vue'),
+        meta: { layout: 'cdio' },
+        beforeEnter: kiemTraKhachHang
+    },
+
+    {
         path: '/admin/dang-nhap',
         component: () => import('../components/Admin/DangNhap/index.vue'),
         meta: { layout: 'blank' }

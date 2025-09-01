@@ -42,9 +42,15 @@
                                     <div class="card flex-fill">
                                         <div class="card-body">
                                             <div class="d-flex flex-column align-items-center text-center">
-                                                <img :src="profile.hinh_anh || 'https://i.pravatar.cc/150'"
-                                                    style="width: 150px; height: 150px;" alt="Avatar"
-                                                    class="rounded-circle p-1 bg-primary" />
+                                                <!-- Avatar -->
+                                                <img :src="profile.hinh_anh || 'https://i.pinimg.com/736x/fa/7e/a6/fa7ea6ce4e90b794eef88dde93522dd6.jpg'"
+                                                    style="width: 150px; height: 150px; cursor: pointer;" alt="Avatar"
+                                                    class="rounded-circle p-1 bg-primary"
+                                                    @click="$refs.avatarInput.click()" />
+
+                                                <!-- Input file ẩn -->
+                                                <input ref="avatarInput" type="file" @change="uploadAvatar"
+                                                    accept="image/*" style="display:none" />
                                                 <div class="mt-3">
                                                     <h4>{{ profile.ho_va_ten }}</h4>
                                                     <p class="text-secondary mb-1">Khách Hàng</p>
@@ -86,7 +92,7 @@
                                             <div class="row">
                                                 <div class="col-lg-3"></div>
                                                 <div class="col-lg-9 text-secondary">
-                                                    <button v-on:click="updateProfile" type="button"
+                                                    <button v-on:click="updateProfile()" type="button"
                                                         class="btn btn-primary px-4">Lưu</button>
                                                 </div>
                                             </div>
@@ -313,6 +319,37 @@ export default {
         this.layDiaChi();
     },
     methods: {
+        uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("hinh_anh", file);
+
+            axios.post("http://127.0.0.1:8000/api/khach-hang/profile/update-avatar", formData, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang"),
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.$toast.success(res.data.message);
+                        // Cập nhật link + bust cache
+                        this.profile.hinh_anh = res.data.data.hinh_anh + '?t=' + new Date().getTime();
+                        localStorage.setItem("khach_hang", JSON.stringify(this.profile));
+
+                        // Bắn sự kiện để header cập nhật ngay
+                        window.dispatchEvent(new Event("avatarUpdated"));
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch(() => {
+                    this.$toast.error("Có lỗi khi tải ảnh lên");
+                });
+        },
+
         doiMatKhau() {
             axios
                 .post("http://127.0.0.1:8000/api/khach-hang/doi-mat-khau", this.passwordForm, {
