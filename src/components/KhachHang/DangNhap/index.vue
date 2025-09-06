@@ -23,7 +23,7 @@
                 <div class="col-12">
                   <label class="form-label">Mật Khẩu</label>
                   <div class="input-group">
-                    <input type="password" v-model="khach_hang.password" class="form-control" placeholder="Nhập vào Mật Khẩu">
+                    <input type="password" v-model="khach_hang.password" v-on:keyup.enter="actionDangNhap()" class="form-control" placeholder="Nhập vào Mật Khẩu">
                   </div>
                   <div class="text-end mt-2">
                     <router-link to="/khach-hang/quen-mat-khau">Quên mật khẩu?</router-link>

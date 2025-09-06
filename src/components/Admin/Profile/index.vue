@@ -32,9 +32,14 @@
                                     <div class="card flex-fill">
                                         <div class="card-body">
                                             <div class="d-flex flex-column align-items-center text-center">
-                                                <img src="https://img.freepik.com/premium-vector/premium-high-quality-boy-sticker-part-93_768745-322.jpg"
-                                                    style="width: 140px; height: 140px;" alt="Admin"
-                                                    class="rounded-circle p-1 bg-primary">
+                                                <img :src="profile.hinh_anh || 'https://i.pinimg.com/736x/fa/7e/a6/fa7ea6ce4e90b794eef88dde93522dd6.jpg'"
+                                                    style="width: 150px; height: 150px; cursor: pointer;" alt="Avatar"
+                                                    class="rounded-circle p-1 bg-primary"
+                                                    @click="$refs.avatarInput.click()" />
+
+                                                <!-- Input file ẩn -->
+                                                <input ref="avatarInput" type="file" @change="uploadAvatar"
+                                                    accept="image/*" style="display:none" />
                                                 <div class="mt-3">
                                                     <h4>{{ profile.ho_va_ten }}</h4>
                                                     <p class="text-secondary mb-1">Nhân Viên</p>
@@ -162,27 +167,34 @@ export default {
                     this.profile = res.data.data;
                 })
         },
+        uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        doiMatKhau() {
-            axios
-                .post("http://127.0.0.1:8000/api/admin/doi-mat-khau", this.passwordForm, {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem("token_admin")
-                    }
-                })
+            const formData = new FormData();
+            formData.append("hinh_anh", file);
+
+            axios.post("http://127.0.0.1:8000/api/admin/profile/update-avatar", formData, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_admin"),
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((res) => {
-                    this.$toast.success(res.data.message);
-                    this.passwordForm = { current_password: '', new_password: '', confirm_new_password: '' };
-                })
-                .catch(error => {
-                    if (error.response && error.response.data.errors) {
-                        const firstError = Object.values(error.response.data.errors)[0][0];
-                        this.$toast.error(firstError);
-                    } else if (error.response && error.response.data.message) {
-                        this.$toast.error(error.response.data.message);
+                    if (res.data.status) {
+                        this.$toast.success(res.data.message);
+                        // Cập nhật link + bust cache
+                        this.profile.hinh_anh = res.data.data.hinh_anh + '?t=' + new Date().getTime();
+                        localStorage.setItem("admin", JSON.stringify(this.profile));
+
+                        // Bắn sự kiện để header cập nhật ngay
+                        window.dispatchEvent(new Event("avatarUpdated"));
                     } else {
-                        this.$toast.error("Có lỗi xảy ra khi đổi mật khẩu.");
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch(() => {
+                    this.$toast.error("Có lỗi khi tải ảnh lên");
                 });
         },
     }
