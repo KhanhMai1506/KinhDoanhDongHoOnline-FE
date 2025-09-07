@@ -19,7 +19,6 @@
                                 <th>Phương Thức</th>
                                 <th>Thanh Toán</th>
                                 <th>Tình Trạng Đơn Hàng</th>
-                                <th>Đánh Giá</th>
                                 <th>In Bill</th>
                             </tr>
                         </thead>
@@ -34,7 +33,7 @@
                                 <td class="text-end">{{ formatVND(v.thanh_tien) }}</td>
                                 <td class="text-center">
                                     <button v-if="v.phuong_thuc == 0" class="btn btn-success w-100">Thanh Toán Online</button>
-                                    <button v-else class="btn btn-danger w-100">Thanh Toán COD</button>
+                                    <button v-else class="btn btn-info w-100">Thanh Toán COD</button>
                                 </td>
                                 <td class="text-center">
                                     <button v-if="v.is_thanh_toan == 1" class="btn btn-success w-100">Đã Thanh
@@ -50,17 +49,9 @@
                                     <button v-else-if="v.tinh_trang == 3" class="btn btn-primary w-100">Đã Giao</button>
                                     <button v-else class="btn btn-danger w-100">Đã Hủy</button>
                                 </td>
-                                <td v-if="v.tinh_trang == 3">
-                                    <router-link :to="'/chi-tiet-san-pham/'+ v.id_san_pham + '-' + v.slug_san_pham">
-                                        <button class="btn btn-success w-100">Đánh Giá</button>
-                                    </router-link>
-                                </td>
-                                <td v-else>
-                                        <button class="btn btn-success w-100" disabled>Đánh Giá</button>
-                                </td>
                                 <td class="text-center align-middle">
-                                    <button @click="openHoaDon(v)" class="btn btn-secondary"><i
-                                            class="fa-solid fa-file-invoice-dollar"></i></button>
+                                    <button @click="openHoaDon(v)" class="btn btn-secondary">
+                                            <i class="fa-solid fa-receipt"></i></button>
                                 </td>
                             </tr>
                         </tbody>

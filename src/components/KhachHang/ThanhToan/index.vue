@@ -56,7 +56,8 @@
                         <div class="input-group">
                             <input v-model="code" type="text" class="form-control" placeholder="Nhập mã giảm giá">
                             <button v-on:click="apDungCode()" class="btn btn-outline-secondary" type="button"
-                                id="button-addon2">Áp Dụng</button>
+                                id="button-addon2">Áp
+                                Dụng</button>
                         </div>
                     </div>
                 </div>
@@ -121,7 +122,8 @@ export default {
             }
         } else {
             this.isMuaNgay = false;
-            this.layGioHang();
+            const spThanhToan = JSON.parse(localStorage.getItem("sp_thanh_toan")) || [];
+            this.san_phams = spThanhToan;
         }
         this.layDiaChi();
     },
@@ -183,6 +185,7 @@ export default {
                 this.$toast.error("Vui lòng chọn địa chỉ!");
                 return;
             }
+
             let data = {
                 tong_tien: this.tinhTong() - this.tien_giam,
                 phuong_thuc: this.phuong_thuc === "MOMO" ? 0 : 1,
@@ -190,9 +193,14 @@ export default {
                 is_mua_ngay: this.isMuaNgay,
                 ma_code_giam: this.code,
                 so_tien_giam: this.tien_giam,
+                san_phams: this.san_phams.map(sp => ({
+                    id: sp.id,        // id chi_tiet_don_hang trong giỏ
+                    so_luong: sp.so_luong,
+                    don_gia: sp.gia_ban
+                }))
             };
 
-            // Nếu là mua ngay → gửi thêm thông tin sản phẩm
+            // Nếu là mua ngay thì giữ logic cũ
             if (this.isMuaNgay) {
                 const sp = this.san_phams[0];
                 data.id_san_pham = sp.id;
@@ -205,9 +213,7 @@ export default {
                     "http://127.0.0.1:8000/api/khach-hang/thanh-toan",
                     data,
                     {
-                        headers: {
-                            Authorization: "Bearer " + localStorage.getItem("token_khach_hang"),
-                        },
+                        headers: { Authorization: "Bearer " + localStorage.getItem("token_khach_hang") }
                     }
                 );
 
@@ -217,13 +223,14 @@ export default {
                         window.location.href = res.data.payUrl;
                     } else {
                         this.$toast.success("Đặt hàng COD thành công!");
+                        window.dispatchEvent(new Event("gioHangUpdated"));
                         this.$router.push("/khach-hang/don-hang");
                     }
                 }
             } catch (err) {
                 this.$toast.error("Có lỗi xảy ra khi đặt hàng!");
             }
-        },
+        }
     },
-};
+}
 </script>

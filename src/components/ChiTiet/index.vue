@@ -93,7 +93,7 @@
                             <div v-for="(dg, index) in danh_sach_danh_gia" :key="index" class="border-bottom py-2">
                                 <small class="text-muted text-middle">{{ dg.khach_hang?.ho_va_ten }} | {{
                                     formatDate(dg.created_at)
-                                    }}</small>
+                                }}</small>
                                 <div class="d-flex align-items-center">
                                     <div class="text-warning">
                                         <span v-for="i in dg.so_sao" :key="i">★</span>
@@ -223,77 +223,102 @@ export default {
                     }
                 });
         },
+        // Lấy chi tiết sản phẩm
         layThongTinSanPham() {
             axios
-                .get('http://127.0.0.1:8000/api/chi-tiet-san-pham/' + this.id_san_pham)
+                .get("http://127.0.0.1:8000/api/chi-tiet-san-pham/" + this.id_san_pham)
                 .then((res) => {
                     if (res.data.status) {
                         this.san_pham = res.data.data;
-                        this.san_pham.so_luong_mua = 1;
+                        this.san_pham.so_luong_ton = this.san_pham.so_luong; // số lượng tồn trong DB
+                        this.san_pham.so_luong = 1; // mặc định khi mua
                     } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.error(thong_bao);
-                        this.$router.push('/');
+                        this.$toast.error(res.data.message);
+                        this.$router.push("/");
                     }
-                })
+                });
         },
+
+        // Sản phẩm đề xuất
         laySanPhamDeXuat() {
-            axios.get('http://127.0.0.1:8000/api/san-pham-de-xuat/' + this.id_san_pham)
-                .then(res => {
+            axios
+                .get("http://127.0.0.1:8000/api/san-pham-de-xuat/" + this.id_san_pham)
+                .then((res) => {
                     if (res.data.status) {
                         this.san_pham_de_xuat = res.data.data;
                     }
                 });
         },
+
+        // Kiểm tra số lượng nhập
         doi() {
-            if (this.san_pham.so_luong_mua < 1) {
-                var message = "Số lượng mua tối thiểu phải là 1 sản phẩm."
-                var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + message + '<span>';
-                this.$toast.warning(thong_bao);
-                this.san_pham.so_luong_mua = 1;
-            } else if (this.san_pham.so_luong_mua > this.san_pham.so_luong) {
-                this.san_pham.so_luong_mua = this.san_pham.so_luong;
-                var message = "Số lượng mua tối đa chỉ được " + this.san_pham.so_luong + " sản phẩm."
-                var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + message + '<span>';
-                this.$toast.warning(thong_bao);
+            if (this.san_pham.so_luong < 1) {
+                this.$toast.warning("Số lượng tối thiểu là 1");
+                this.san_pham.so_luong = 1;
+            } else if (this.san_pham.so_luong > this.san_pham.so_luong_ton) {
+                this.san_pham.so_luong = this.san_pham.so_luong_ton;
+                this.$toast.warning(
+                    "Số lượng tối đa: " + this.san_pham.so_luong_ton
+                );
             }
         },
         tru() {
-            this.san_pham.so_luong_mua = this.san_pham.so_luong_mua * 1 - 1;
-            if (this.san_pham.so_luong_mua < 1) {
-                var message = "Số lượng mua tối thiểu phải là 1 sản phẩm."
-                var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + message + '<span>';
-                this.$toast.warning(thong_bao);
-                this.san_pham.so_luong_mua = 1;
+            this.san_pham.so_luong--;
+            if (this.san_pham.so_luong < 1) {
+                this.$toast.warning("Số lượng tối thiểu là 1");
+                this.san_pham.so_luong = 1;
             }
         },
         cong() {
-            this.san_pham.so_luong_mua = this.san_pham.so_luong_mua * 1 + 1;
-            if (this.san_pham.so_luong_mua > this.san_pham.so_luong) {
-                this.san_pham.so_luong_mua = this.san_pham.so_luong;
-                var message = "Số lượng mua tối đa chỉ được " + this.san_pham.so_luong + " sản phẩm."
-                var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + message + '<span>';
-                this.$toast.warning(thong_bao);
+            this.san_pham.so_luong++;
+            if (this.san_pham.so_luong > this.san_pham.so_luong_ton) {
+                this.san_pham.so_luong = this.san_pham.so_luong_ton;
+                this.$toast.warning(
+                    "Số lượng tối đa: " + this.san_pham.so_luong_ton
+                );
             }
         },
+
+        // Thêm vào giỏ hàng
         themGioHang() {
             axios
-                .post("http://127.0.0.1:8000/api/khach-hang/gio-hang/create", this.san_pham, {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                .post(
+                    "http://127.0.0.1:8000/api/khach-hang/gio-hang/create",
+                    {
+                        id: this.san_pham.id,
+                        so_luong: this.san_pham.so_luong,
+                    },
+                    {
+                        headers: {
+                            Authorization:
+                                "Bearer " + localStorage.getItem("token_khach_hang"),
+                        },
                     }
-                })
+                )
                 .then((res) => {
                     if (res.data.status) {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.success(thong_bao);
+                        this.$toast.success(res.data.message);
+                        window.dispatchEvent(new Event("gioHangUpdated"));
                     } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.error(thong_bao);
-                        this.$router.push('/khach-hang/dang-nhap');
+                        this.$toast.error(res.data.message);
+                        this.$router.push("/khach-hang/dang-nhap");
                     }
-                })
+                });
         },
+
+        // Mua ngay
+        muaNgay() {
+            const sp = {
+                id: this.san_pham.id,
+                ten_san_pham: this.san_pham.ten_san_pham,
+                hinh_anh: this.san_pham.hinh_anh,
+                gia_ban: this.san_pham.gia_ban,
+                so_luong: this.san_pham.so_luong,
+            };
+            localStorage.setItem("mua_ngay", JSON.stringify(sp));
+            this.$router.push({ path: "/khach-hang/thanh-toan", query: { mode: "mua-ngay" } });
+        },
+
         formatCurrency(value) {
             return new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
