@@ -134,7 +134,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button @click="guiDanhGia" class="btn btn-dark">Gửi đánh giá</button>
+                        <button @click="guiDanhGia" class="btn btn-info" data-bs-dismiss="modal">Gửi đánh giá</button>
                     </div>
                 </div>
             </div>
@@ -218,6 +218,7 @@ export default {
                         this.$toast.success("Gửi đánh giá thành công!");
                         this.danh_gia.noi_dung = "";
                         this.layDanhGia();
+                        this.layThongKeDanhGia();
                     } else {
                         this.$toast.error(res.data.message);
                     }
