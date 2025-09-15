@@ -289,7 +289,8 @@
                                         placeholder="Nhập lại mật khẩu mới" class="form-control">
                                 </div>
                             </div>
-                            <button v-on:click="doiMatKhau" class="btn btn-primary">Lưu</button>
+                            <button v-on:click="doiMatKhau" class="btn btn-primary"
+                                :disabled="profile.google_id != null">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -482,7 +483,6 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.status) {
-                        //this.profile = res.data.data;
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.getDataProfile()
