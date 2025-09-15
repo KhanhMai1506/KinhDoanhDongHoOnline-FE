@@ -15,9 +15,33 @@
             <!-- Thông tin sản phẩm -->
             <div class="col-md-6">
                 <h4><b>{{ san_pham.ten_san_pham }}</b></h4>
-                <h5 class="mt-3 text-danger">
-                    <b>{{ formatCurrency(san_pham.gia_ban) }}</b>
-                </h5>
+                <!-- Giá sản phẩm -->
+                <!-- Giá sản phẩm -->
+                <div class="mt-3">
+                    <template v-if="san_pham.is_flash_sale == 1">
+                        <div class="d-flex align-items-baseline gap-2">
+                            <!-- Giá khuyến mãi -->
+                            <h4 class="text-danger fw-bold mb-0">
+                                {{ formatCurrency(san_pham.gia_khuyen_mai) }}
+                            </h4>
+                            <!-- Giá gốc -->
+                            <span class="text-muted text-decoration-line-through">
+                                {{ formatCurrency(san_pham.gia_ban) }}
+                            </span>
+                            <!-- % giảm -->
+                            <span class="badge bg-danger">-{{ san_pham.phan_tram }}%</span>
+                        </div>
+                    </template>
+
+                    <template v-else>
+                        <!-- Chỉ có giá gốc -->
+                        <h4 class="text-danger fw-bold">
+                            {{ formatCurrency(san_pham.gia_ban) }}
+                        </h4>
+                    </template>
+                </div>
+
+
                 <p class="mt-3 text-muted">{{ san_pham.mo_ta_ngan }}</p>
 
                 <!-- Số lượng -->
@@ -93,7 +117,7 @@
                             <div v-for="(dg, index) in danh_sach_danh_gia" :key="index" class="border-bottom py-2">
                                 <small class="text-muted text-middle">{{ dg.khach_hang?.ho_va_ten }} | {{
                                     formatDate(dg.created_at)
-                                }}</small>
+                                    }}</small>
                                 <div class="d-flex align-items-center">
                                     <div class="text-warning">
                                         <span v-for="i in dg.so_sao" :key="i">★</span>
@@ -206,6 +230,7 @@ export default {
         guiDanhGia() {
             axios.post("http://127.0.0.1:8000/api/danh-gia/create", {
                 id_san_pham: this.id_san_pham,
+                ten_san_pham: this.san_pham.ten_san_pham,
                 so_sao: this.danh_gia.so_sao,
                 noi_dung: this.danh_gia.noi_dung
             }, {
@@ -332,10 +357,5 @@ export default {
 <style scoped>
 .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 </style>

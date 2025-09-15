@@ -67,10 +67,11 @@ export default {
         window.addEventListener("avatarUpdated", () => {
             const updatedAdmin = JSON.parse(localStorage.getItem('admin'));
             if (updatedAdmin) {
-                this.avatar_admin = updatedAdmin.hinh_anh;
+                this.avatar_admin = updatedAdmin.hinh_anh + '?t=' + new Date().getTime();
                 this.name_admin = updatedAdmin.ho_va_ten;
             }
         });
+
     },
     methods: {
         dangXuat() {

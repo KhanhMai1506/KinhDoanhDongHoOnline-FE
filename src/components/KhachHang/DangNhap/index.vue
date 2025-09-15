@@ -38,8 +38,8 @@
                 </div>
                 <div class="col-12">
                   <div class="d-grid">
-                    <button type="button" @click="loginWithGoogle" class="btn btn-white">
-                      <i class="fa-brands fa-google" style="font-size: 20px; color: #DB4437;"></i>Đăng nhập bằng Google
+                    <button type="button" @click="loginWithGoogle" class="btn btn-white align-middle">
+                      <i class="fa-brands fa-google" style="color: #e81717;"></i>Đăng Nhập Bằng Google
                     </button>
                   </div>
                 </div>

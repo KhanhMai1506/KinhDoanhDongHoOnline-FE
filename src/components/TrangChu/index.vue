@@ -88,7 +88,8 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
+                    <div
+                        class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
                         <template v-for="(value, index) in list_flash_sale" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"
@@ -99,14 +100,25 @@
 
                                         <div class="card-body d-flex flex-column justify-content-between">
                                             <h6 class="card-title">{{ value.ten_san_pham }}</h6>
-                                            <p class="card-text mb-0">{{ formatCurrency(value.gia_ban) }}</p>
+
+                                            <!-- Giá khuyến mãi -->
+                                            <span class="text-danger fw-bold fs-5">
+                                                {{ formatCurrency(value.gia_khuyen_mai) }}
+                                            </span>
+
+                                            <!-- Giá gốc + % giảm -->
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-muted text-decoration-line-through">
+                                                    {{ formatCurrency(value.gia_ban) }}
+                                                </span>
+                                                <span class="text-danger">-{{ value.phan_tram }}%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </router-link>
                             </div>
                         </template>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -123,7 +135,8 @@
                         <a href="" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
+                    <div
+                        class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
                         <template v-for="(value, index) in list_noi_bat" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"

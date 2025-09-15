@@ -21,7 +21,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
-                                <th>Mã Sản Phẩm</th>
+                                <th>Tên Sản Phẩm</th>
                                 <th>Tên Khách Hàng</th>
                                 <th>Sao</th>
                                 <th>Nội Dung</th>
@@ -32,7 +32,7 @@
                             <template v-for="(value, index) in list_danh_gia" :key="index">
                                 <tr class="align-middle">
                                     <th class="text-center">{{ index + 1 }}</th>
-                                    <td class="text-center">{{ value.id_san_pham }}</td>
+                                    <td class="text-center">{{ value.ten_san_pham }}</td>
                                     <td class="text-center">{{ value.khach_hang?.ho_va_ten }}</td>
                                     <td class="text-center">
                                         <span v-for="i in 5" :key="i">
