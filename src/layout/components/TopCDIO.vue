@@ -89,7 +89,7 @@ export default {
         return {
             auth: false,
             name_kh: "",
-            avatar: "https://i.pravatar.cc/50",
+            avatar: "https://i.pinimg.com/736x/fa/7e/a6/fa7ea6ce4e90b794eef88dde93522dd6.jpg",
             tu_khoa: "",
             user: null,
             gio_hang_count: 0
@@ -143,7 +143,7 @@ export default {
                     this.auth = true;
                     this.user = user;
                     this.name_kh = user.ho_va_ten;
-                    this.avatar = user.hinh_anh || "https://i.pravatar.cc/50";
+                    this.avatar = user.hinh_anh || "https://i.pinimg.com/736x/fa/7e/a6/fa7ea6ce4e90b794eef88dde93522dd6.jpg";
                     localStorage.setItem("khach_hang", JSON.stringify(user));
                 } else this.clearAuth();
             } catch {
@@ -155,7 +155,7 @@ export default {
             this.auth = false;
             this.user = null;
             this.name_kh = "";
-            this.avatar = "https://i.pravatar.cc/50";
+            this.avatar = "https://i.pinimg.com/736x/fa/7e/a6/fa7ea6ce4e90b794eef88dde93522dd6.jpg";
             localStorage.removeItem("token_khach_hang");
             localStorage.removeItem("khach_hang");
             delete axios.defaults.headers.common['Authorization'];

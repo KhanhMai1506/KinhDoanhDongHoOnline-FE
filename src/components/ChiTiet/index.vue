@@ -103,11 +103,14 @@
                         </div>
                         <small>{{ thong_ke_danh_gia.theo_sao[sao] || 0 }}</small>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center" v-if="co_quyen_danh_gia">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#rateModal">
                             Đánh Giá
                         </button>
+                    </div>
+                    <div v-else class="text-muted text-center">
+                        Chỉ khách hàng đã mua sản phẩm mới có thể đánh giá.
                     </div>
                     <hr>
                     <div class="mt-2">
@@ -117,7 +120,7 @@
                             <div v-for="(dg, index) in danh_sach_danh_gia" :key="index" class="border-bottom py-2">
                                 <small class="text-muted text-middle">{{ dg.khach_hang?.ho_va_ten }} | {{
                                     formatDate(dg.created_at)
-                                    }}</small>
+                                }}</small>
                                 <div class="d-flex align-items-center">
                                     <div class="text-warning">
                                         <span v-for="i in dg.so_sao" :key="i">★</span>
@@ -184,7 +187,8 @@ export default {
                 tong: 0,
                 trung_binh: 0,
                 theo_sao: {}
-            }
+            },
+            co_quyen_danh_gia: false,
         }
     },
     beforeRouteUpdate(to, from, next) {
@@ -193,6 +197,7 @@ export default {
         this.laySanPhamDeXuat();
         this.layDanhGia();
         this.layThongKeDanhGia();
+        this.checkQuyenDanhGia();
         next();
     },
     mounted() {
@@ -200,6 +205,7 @@ export default {
         this.laySanPhamDeXuat(this.id_san_pham);
         this.layDanhGia();
         this.layThongKeDanhGia();
+        this.checkQuyenDanhGia();
     },
     methods: {
         layThongKeDanhGia() {
@@ -208,6 +214,19 @@ export default {
                     if (res.data.status) {
                         this.thong_ke_danh_gia = res.data;
                     }
+                });
+        },
+        checkQuyenDanhGia() {
+            axios.get("http://127.0.0.1:8000/api/danh-gia/kiem-tra/" + this.id_san_pham, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                }
+            })
+                .then(res => {
+                    this.co_quyen_danh_gia = res.data.status;
+                })
+                .catch(() => {
+                    this.co_quyen_danh_gia = false;
                 });
         },
         formatDate(dateString) {
@@ -334,11 +353,15 @@ export default {
 
         // Mua ngay
         muaNgay() {
+            const donGia = this.san_pham.is_flash_sale == 1
+                ? this.san_pham.gia_khuyen_mai
+                : this.san_pham.gia_ban;
+
             const sp = {
                 id: this.san_pham.id,
                 ten_san_pham: this.san_pham.ten_san_pham,
                 hinh_anh: this.san_pham.hinh_anh,
-                gia_ban: this.san_pham.gia_ban,
+                don_gia: donGia,   // 👉 luôn có don_gia
                 so_luong: this.san_pham.so_luong,
             };
             localStorage.setItem("mua_ngay", JSON.stringify(sp));

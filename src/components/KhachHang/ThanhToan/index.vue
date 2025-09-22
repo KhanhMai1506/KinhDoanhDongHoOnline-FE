@@ -31,12 +31,14 @@
                                     </div>
                                 </td>
                                 <td class="text-center align-middle">{{ sp.so_luong }}</td>
-                                <td class="text-end  align-middle">{{ formatCurrency(sp.gia_ban) }}</td>
-                                <td class="text-end  align-middle fw-bold">
-                                    {{ formatCurrency(sp.so_luong * sp.gia_ban) }}
+                                <!-- 👉 Dùng don_gia thay vì gia_ban -->
+                                <td class="text-end align-middle">{{ formatCurrency(sp.don_gia) }}</td>
+                                <td class="text-end align-middle fw-bold">
+                                    {{ formatCurrency(sp.so_luong * sp.don_gia) }}
                                 </td>
                             </tr>
                         </tbody>
+
                     </table>
                 </div>
                 <hr>
@@ -120,7 +122,8 @@ export default {
             if (sp) {
                 this.san_phams = [sp];
             }
-        } else {
+        }
+        else {
             this.isMuaNgay = false;
             const spThanhToan = JSON.parse(localStorage.getItem("sp_thanh_toan")) || [];
             this.san_phams = spThanhToan;
@@ -170,7 +173,7 @@ export default {
         },
         tinhTong() {
             return this.san_phams.reduce(
-                (sum, sp) => sum + sp.so_luong * sp.gia_ban,
+                (sum, sp) => sum + sp.so_luong * sp.don_gia,
                 0
             );
         },
@@ -196,7 +199,7 @@ export default {
                 san_phams: this.san_phams.map(sp => ({
                     id: sp.id,        // id chi_tiet_don_hang trong giỏ
                     so_luong: sp.so_luong,
-                    don_gia: sp.gia_ban
+                    don_gia: sp.don_gia   // 👉 gửi đúng giá đã xử lý flashsale
                 }))
             };
 
@@ -205,7 +208,7 @@ export default {
                 const sp = this.san_phams[0];
                 data.id_san_pham = sp.id;
                 data.so_luong = sp.so_luong;
-                data.don_gia = sp.gia_ban;
+                data.don_gia = sp.don_gia;
             }
 
             try {
