@@ -18,7 +18,7 @@
               <form class="row g-3">
                 <div class="col-12">
                   <label class="form-label">Email</label>
-                  <input type="email" v-model="khach_hang.email" class="form-control" placeholder="Nhập vào Email">
+                  <input type="email" v-model="khach_hang.email" v-on:keyup.enter="actionDangNhap()" class="form-control" placeholder="Nhập vào Email">
                 </div>
                 <div class="col-12">
                   <label class="form-label">Mật Khẩu</label>
