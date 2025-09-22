@@ -1,72 +1,101 @@
 <template>
     <div class="container my-4">
-        <!-- Breadcrumb -->
-        <div class="mb-3 text-muted">
-            <small>Trang chủ > Sản phẩm > Chi tiết</small>
-        </div>
+        <!-- Chi tiết -->
+        <div class="card">
+            <div class="card-body">
+                <!-- Breadcrumb -->
+                <div class="mb-3 text-muted">
+                    <small>Trang chủ > Sản phẩm > Chi tiết</small>
+                </div>
+                <div class="row">
+                    <!-- Ảnh sản phẩm -->
+                    <div class="col-md-6 text-center">
+                        <img :src="san_pham.hinh_anh" alt="Ảnh sản phẩm" class="img-fluid "
+                            style="height: 400px; object-fit: contain;" />
+                    </div>
 
-        <div class="row">
-            <!-- Ảnh sản phẩm -->
-            <div class="col-md-6">
-                <img :src="san_pham.hinh_anh" alt="Ảnh sản phẩm" class="img-fluid border"
-                    style="height: 400px; object-fit: contain;" />
-            </div>
+                    <!-- Thông tin sản phẩm -->
+                    <div class="col-md-6">
+                        <h4><b>{{ san_pham.ten_san_pham }}</b></h4>
+                        <!-- Giá sản phẩm -->
+                        <!-- Giá sản phẩm -->
+                        <div class="mt-3">
+                            <template v-if="san_pham.is_flash_sale == 1">
+                                <div class="d-flex align-items-baseline gap-2">
+                                    <!-- Giá khuyến mãi -->
+                                    <h4 class="text-danger fw-bold mb-0">
+                                        {{ formatCurrency(san_pham.gia_khuyen_mai) }}
+                                    </h4>
+                                    <!-- Giá gốc -->
+                                    <span class="text-muted text-decoration-line-through">
+                                        {{ formatCurrency(san_pham.gia_ban) }}
+                                    </span>
+                                    <!-- % giảm -->
+                                    <span class="badge bg-danger">-{{ san_pham.phan_tram }}%</span>
+                                </div>
+                            </template>
 
-            <!-- Thông tin sản phẩm -->
-            <div class="col-md-6">
-                <h4><b>{{ san_pham.ten_san_pham }}</b></h4>
-                <!-- Giá sản phẩm -->
-                <!-- Giá sản phẩm -->
-                <div class="mt-3">
-                    <template v-if="san_pham.is_flash_sale == 1">
-                        <div class="d-flex align-items-baseline gap-2">
-                            <!-- Giá khuyến mãi -->
-                            <h4 class="text-danger fw-bold mb-0">
-                                {{ formatCurrency(san_pham.gia_khuyen_mai) }}
-                            </h4>
-                            <!-- Giá gốc -->
-                            <span class="text-muted text-decoration-line-through">
-                                {{ formatCurrency(san_pham.gia_ban) }}
-                            </span>
-                            <!-- % giảm -->
-                            <span class="badge bg-danger">-{{ san_pham.phan_tram }}%</span>
+                            <template v-else>
+                                <!-- Chỉ có giá gốc -->
+                                <h4 class="text-danger fw-bold">
+                                    {{ formatCurrency(san_pham.gia_ban) }}
+                                </h4>
+                            </template>
                         </div>
-                    </template>
-
-                    <template v-else>
-                        <!-- Chỉ có giá gốc -->
-                        <h4 class="text-danger fw-bold">
-                            {{ formatCurrency(san_pham.gia_ban) }}
-                        </h4>
-                    </template>
-                </div>
 
 
-                <p class="mt-3 text-muted">{{ san_pham.mo_ta_ngan }}</p>
+                        <p class="mt-3 text-muted">{{ san_pham.mo_ta_ngan }}</p>
 
-                <!-- Số lượng -->
-                <div class="input-group input-spinner d-flex justify-content-center flex-row"
-                    style="flex-wrap: nowrap; width: 120px;">
-                    <button @click="tru" class="btn btn-white" type="button">−</button>
-                    <input @change="doi" type="text" v-model="san_pham.so_luong" class="form-control text-center" />
-                    <button @click="cong" class="btn btn-white" type="button">+</button>
-                </div>
-                <small class="text-muted">Còn lại: {{ san_pham.so_luong_ton }}</small>
+                        <!-- Số lượng -->
+                        <div class="input-group input-spinner d-flex justify-content-center flex-row"
+                            style="flex-wrap: nowrap; width: 120px;">
+                            <button @click="tru" class="btn btn-white" type="button">−</button>
+                            <input @change="doi" type="text" v-model="san_pham.so_luong"
+                                class="form-control text-center" />
+                            <button @click="cong" class="btn btn-white" type="button">+</button>
+                        </div>
+                        <small class="text-muted">Còn lại: {{ san_pham.so_luong_ton }}</small>
 
-                <!-- Nút hành động -->
-                <div class="d-flex gap-3 mt-4">
-                    <button @click="muaNgay" class="btn btn-dark flex-fill">
-                        Mua Ngay
-                    </button>
-                    <button @click="themGioHang" class="btn btn-outline-dark flex-fill">
-                        Thêm Vào Giỏ Hàng
-                    </button>
+                        <!-- Nút hành động -->
+                        <div class="d-flex gap-3 mt-4">
+                            <button @click="muaNgay" class="btn btn-dark flex-fill">
+                                Mua Ngay
+                            </button>
+                            <button @click="themGioHang" class="btn btn-outline-dark flex-fill">
+                                Thêm Vào Giỏ Hàng
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Sản phẩm đề xuất -->
-        <div class="mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h5>SẢN PHẨM ĐỀ XUẤT</h5>
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-2 row-cols-md-4 g-3 mt-2">
+                    <template v-for="(value, index) in san_pham_de_xuat" :key="index">
+                        <div class="col">
+                            <router-link :to="'/chi-tiet-dong-ho/' + value.id" class="text-decoration-none text-dark">
+                                <div class="card h-100">
+                                    <img :src="value.hinh_anh" class="card-img-top"
+                                        style="height: 180px; object-fit: contain;" />
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ value.ten_san_pham }}</h6>
+                                        <p class="card-text">{{ formatCurrency(value.gia_ban) }}</p>
+                                    </div>
+                                </div>
+                            </router-link>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="mt-5">
             <h5>SẢN PHẨM ĐỀ XUẤT</h5>
             <div class="row row-cols-2 row-cols-md-4 g-3 mt-2">
                 <template v-for="(value, index) in san_pham_de_xuat" :key="index">
@@ -84,7 +113,7 @@
                     </div>
                 </template>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="col-lg-6">
@@ -120,7 +149,7 @@
                             <div v-for="(dg, index) in danh_sach_danh_gia" :key="index" class="border-bottom py-2">
                                 <small class="text-muted text-middle">{{ dg.khach_hang?.ho_va_ten }} | {{
                                     formatDate(dg.created_at)
-                                }}</small>
+                                    }}</small>
                                 <div class="d-flex align-items-center">
                                     <div class="text-warning">
                                         <span v-for="i in dg.so_sao" :key="i">★</span>

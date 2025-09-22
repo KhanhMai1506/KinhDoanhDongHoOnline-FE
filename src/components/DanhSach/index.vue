@@ -96,13 +96,13 @@
                         &laquo; Trước
                     </button>
 
-                    <button v-for="page in totalPages" :key="page" class="btn"
+                    <button v-for="page in totalPages" :key="page" class="btn me-2"
                         :class="page === currentPage ? 'btn-primary' : 'btn-outline-primary'"
                         @click="currentPage = page">
                         {{ page }}
                     </button>
 
-                    <button class="btn btn-outline-secondary ms-2" :disabled="currentPage === totalPages"
+                    <button class="btn btn-outline-secondary" :disabled="currentPage === totalPages"
                         @click="currentPage++">
                         Tiếp &raquo;
                     </button>
@@ -124,7 +124,7 @@ export default {
             tag_search: "",
             sortType: "moi",
             currentPage: 1,
-            itemsPerPage: 9,
+            itemsPerPage: 6,
             priceFilter: "", // khoảng giá dạng "min-max"
         };
     },
