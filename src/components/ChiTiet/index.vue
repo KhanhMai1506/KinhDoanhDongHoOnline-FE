@@ -134,7 +134,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button @click="guiDanhGia" class="btn btn-dark">Gửi đánh giá</button>
+                        <button @click="guiDanhGia" class="btn btn-info" data-bs-dismiss="modal">Gửi đánh giá</button>
                     </div>
                 </div>
             </div>
@@ -218,6 +218,7 @@ export default {
                         this.$toast.success("Gửi đánh giá thành công!");
                         this.danh_gia.noi_dung = "";
                         this.layDanhGia();
+                        this.layThongKeDanhGia();
                     } else {
                         this.$toast.error(res.data.message);
                     }
@@ -333,8 +334,5 @@ export default {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
+
 </style>
