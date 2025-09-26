@@ -11,6 +11,18 @@ const routes = [
     },
 
     {
+        path: '/noi-bat',
+        component: () => import('../components//DanhSach/spnoibat.vue'),
+        meta: { layout: 'cdio' }
+    },
+
+    {
+        path: '/flash-sale',
+        component: () => import('../components/DanhSach/spflash.vue'),
+        meta: { layout: 'cdio' }
+    },
+
+    {
         path: '/lien-he',
         component: () => import('../components/LienHe/index.vue'),
         meta: { layout: 'cdio' },

@@ -19,6 +19,7 @@
                                 <th>Phương Thức</th>
                                 <th>Thanh Toán</th>
                                 <th>Tình Trạng Đơn Hàng</th>
+                                <th>Hủy Đơn Hàng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,15 +50,48 @@
 
                                 <td class="text-center">
                                     <button v-if="v.tinh_trang == 0" class="btn btn-warning w-100">Chờ Xử Lý</button>
-                                    <button v-else-if="v.tinh_trang == 1" class="btn btn-success w-100">Đã Xác Nhận</button>
+                                    <button v-else-if="v.tinh_trang == 1" class="btn btn-success w-100">Đã Xác
+                                        Nhận</button>
                                     <button v-else-if="v.tinh_trang == 2" class="btn btn-info w-100">Đang Vận
                                         Chuyển</button>
                                     <button v-else-if="v.tinh_trang == 3" class="btn btn-primary w-100">Đã Giao</button>
                                     <button v-else class="btn btn-danger w-100">Đã Hủy</button>
                                 </td>
+                                <td class="text-center">
+                                    <i data-bs-toggle="modal" data-bs-target="#delModal"
+                                        v-on:click="delete_don_hang = v" class="fa-solid fa-trash fa-2xl"
+                                        style="color: red;"></i>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hủy Đơn Hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show py-2">
+                        <div class="d-flex align-items-center">
+                            <div class="font-35 text-white"><i class="bx bxs-message-square-x"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0 text-white">Cảnh Báo!</h6>
+                                <div class="text-white">Bạn có chắc chắn hủy đơn hàng này không?</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button v-on:click="huyDonHang()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Xác
+                        Nhận</button>
                 </div>
             </div>
         </div>
@@ -70,6 +104,7 @@ export default {
     data() {
         return {
             list: [],
+            delete_don_hang: {},
         }
     },
     mounted() {
@@ -90,6 +125,24 @@ export default {
         formatVND(number) {
             return new Intl.NumberFormat('vi-VI', { style: 'currency', currency: 'VND' }).format(number);
         },
+        huyDonHang() {
+            axios.put(`http://127.0.0.1:8000/api/khach-hang/huy-don-hang/${this.delete_don_hang.id}`, {}, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                }
+            })
+                .then((res) => {
+                    this.$toast.success(res.data.message);
+                    this.layData(); // load lại danh sách
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        this.$toast.error(err.response.data.message);
+                    } else {
+                        this.$toast.error("Có lỗi xảy ra khi hủy đơn hàng!");
+                    }
+                });
+        }
     },
 }
 </script>

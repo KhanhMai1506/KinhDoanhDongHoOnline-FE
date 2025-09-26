@@ -12,7 +12,7 @@
                 </div>
                 <div class="carousel-inner rounded-5">
                     <div class="carousel-item active" data-bs-interval="3000">
-                        <img src="https://www.watchstore.vn/images/slideshow/2024/03/29/compress/2612-bonest-gatti_1711706293.webp"
+                        <img src="https://xwatch.vn/images/slideshow/2024/12/04/original/img_20241204_164504_1733305597.jpg"
                             class="d-block w-100 rounded-5" style="height: 400px;" alt="...">
                     </div>
                     <div class="carousel-item" data-bs-interval="3000">
@@ -20,7 +20,7 @@
                             class="d-block w-100 rounded-5" style="height: 400px;" alt="...">
                     </div>
                     <div class="carousel-item" data-bs-interval="3000">
-                        <img src="https://curnonwatch.com/wp-content/uploads/2025/07/Banner-1536x1024.webp"
+                        <img src="https://xwatch.vn/images/slideshow/2024/10/04/original/thuong-hieu-posedius-1170x400_1728016590.jpg"
                             class="d-block w-100 rounded-5" style="height: 400px;" alt="...">
                     </div>
                 </div>
@@ -85,12 +85,12 @@
                         <h4>
                             <i class="fa-solid fa-bolt text-warning"></i> FLASH SALE
                         </h4>
-                        <a href="" class="fs-5">Xem tất cả</a>
+                        <a href="/flash-sale" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
                     <div
                         class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
-                        <template v-for="(value, index) in list_flash_sale" :key="index">
+                        <template v-for="(value, index) in list_flash_sale.slice(0,4)" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                     class="text-decoration-none text-dark w-100 h-100">
@@ -132,12 +132,12 @@
                         <h4>
                             <i class="fa-solid fa-fire text-danger"></i> SẢN PHẨM NỔI BẬT
                         </h4>
-                        <a href="" class="fs-5">Xem tất cả</a>
+                        <a href="/noi-bat" class="fs-5">Xem tất cả</a>
                     </div>
                     <hr>
                     <div
                         class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-3 product-grid">
-                        <template v-for="(value, index) in list_noi_bat" :key="index">
+                        <template v-for="(value, index) in list_noi_bat.slice(0,4)" :key="index">
                             <div class="col d-flex">
                                 <router-link :to="'/chi-tiet-dong-ho/' + value.id"
                                     class="text-decoration-none text-dark w-100 h-100">
