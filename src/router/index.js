@@ -70,6 +70,26 @@ const routes = [
     },
 
     {
+        path: '/khach-hang/lay-lai-mat-khau',
+        component: () => import('../components/KhachHang/LayLaiMatKhau/index.vue'),
+        meta: { layout: 'blank' }
+    },
+
+    {
+        path: '/khach-hang/doi-mat-khau-moi/:id_khach_hang',
+        component: () => import('../components/KhachHang/LayLaiMatKhau/index.vue'),
+        meta: { layout: 'blank' },
+        props: true
+    },
+
+    {
+        path: '/khach-hang/kich-hoat/:id_khach_hang',
+        component: () => import('../components/KhachHang/KichHoat/index.vue'),
+        meta: { layout: 'blank' },
+        props: true
+    },
+
+    {
         path: '/khach-hang/dang-ky',
         component: () => import('../components/KhachHang/DangKy/index.vue'),
         meta: { layout: 'blank' }
