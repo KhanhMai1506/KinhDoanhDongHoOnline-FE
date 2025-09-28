@@ -34,6 +34,13 @@ const routes = [
         meta: { layout: 'cdio' },
     },
 
+
+    {
+        path: '/chat',
+        component: () => import('../components/Chat/index.vue'),
+        meta: { layout: 'cdio' },
+    },
+
     {
         path: '/:slug_danh_muc',
         component: () => import('../components/DanhSach/index.vue'),
@@ -184,6 +191,13 @@ const routes = [
         meta: { layout: 'admin' },
         beforeEnter: kiemTraAdmin
     },
+    {
+        path: '/admin/chat',
+        component: () => import('../components/Admin/Chat/index.vue'),
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
+    },
+
 ]
 
 const router = createRouter({
