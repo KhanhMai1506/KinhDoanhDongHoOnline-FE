@@ -178,6 +178,12 @@ const routes = [
         beforeEnter: kiemTraAdmin
     },
 
+    {
+        path: '/admin/thong-ke',
+        component: () => import('../components/Admin/ThongKe/index.vue'),
+        meta: { layout: 'admin' },
+        beforeEnter: kiemTraAdmin
+    },
 ]
 
 const router = createRouter({
