@@ -73,7 +73,7 @@
           <router-link :to="'/admin/chat'">
             <a class="nav-link" :href="'/'">
               <div class="parent-icon">
-                <i class="fa-brands fa-rocketchat"></i>
+                <i class="fa-solid fa-comments"></i>
               </div>
               <div class="menu-title">Chat</div>
             </a>

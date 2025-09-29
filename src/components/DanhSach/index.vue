@@ -51,44 +51,44 @@
                 <hr />
 
                 <!-- Grid sản phẩm -->
-                <div class="row product-grid">
-                    <template v-for="(value, index) in paginatedProducts" :key="index">
-                        <div class="col-lg-4 col-md-6 mt-3 d-flex">
-                            <router-link :to="'/chi-tiet-dong-ho/' + value.id"
-                                class="text-decoration-none text-dark w-100">
-                                <div class="card flex-fill">
-                                    <img :src="value.hinh_anh" class="card-img-top"
-                                        style="width: 100%; height: 230px; object-fit: contain; vertical-align: middle;"
-                                        alt="..." />
-                                    <div class="card-body d-flex flex-column justify-content-between">
-                                        <h6 class="card-title">{{ value.ten_san_pham }}</h6>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <!-- Nếu có flash sale -->
-                                                <template v-if="value.is_flash_sale == 1 && value.gia_khuyen_mai > 0">
-                                                    <span class="text-danger fw-bold fs-5">
-                                                        {{ formatCurrency(value.gia_khuyen_mai) }}
-                                                    </span>
-                                                    <span class="text-muted align-middle text-decoration-line-through">
-                                                        {{ formatCurrency(value.gia_ban) }}
-                                                    </span>
-                                                    <span class="text-danger">-{{ value.phan_tram }}%</span>
-                                                </template>
+               <div class="row product-grid">
+    <template v-for="(value, index) in paginatedProducts" :key="index">
+        <div class="col-lg-4 col-md-6 mt-3 d-flex">
+            <router-link :to="'/chi-tiet-dong-ho/' + value.id"
+                class="text-decoration-none text-dark w-100">
+                <div class="card flex-fill h-100">
+                    <img :src="value.hinh_anh" class="card-img-top"
+                        style="width: 100%; height: 230px; object-fit: contain; vertical-align: middle;"
+                        alt="..." />
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h6 class="card-title">{{ value.ten_san_pham }}</h6>
+                        <div class="d-flex align-items-center gap-2 mt-auto">
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- Nếu có flash sale -->
+                                <template v-if="value.is_flash_sale == 1 && value.gia_khuyen_mai > 0">
+                                    <span class="text-danger fw-bold fs-5">
+                                        {{ formatCurrency(value.gia_khuyen_mai) }}
+                                    </span>
+                                    <span class="text-muted align-middle text-decoration-line-through">
+                                        {{ formatCurrency(value.gia_ban) }}
+                                    </span>
+                                    <span class="text-danger">-{{ value.phan_tram }}%</span>
+                                </template>
 
-                                                <!-- Nếu không flash sale -->
-                                                <template v-else>
-                                                    <span class="text-danger fw-bold fs-5">
-                                                        {{ formatCurrency(value.gia_ban) }}
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </router-link>
+                                <!-- Nếu không flash sale -->
+                                <template v-else>
+                                    <span class="text-danger fw-bold fs-5">
+                                        {{ formatCurrency(value.gia_ban) }}
+                                    </span>
+                                </template>
+                            </div>
                         </div>
-                    </template>
+                    </div>
                 </div>
+            </router-link>
+        </div>
+    </template>
+</div>
 
                 <!-- Phân trang -->
                 <div class="mt-3 d-flex justify-content-center align-items-center">
