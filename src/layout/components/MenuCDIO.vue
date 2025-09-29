@@ -46,6 +46,17 @@
                         </a>
                     </router-link>
                 </li>
+
+
+                <li class="nav-item">
+                    <router-link :to="'/chat'">
+                        <a class="nav-link" :href="'/chat'">
+                            <div class="parent-icon"><i class="fa-solid fa-comments"></i>
+                            </div>
+                            <div class="menu-title">Chat</div>
+                        </a>
+                    </router-link>
+                </li>
             </ul>
         </nav>
     </div>

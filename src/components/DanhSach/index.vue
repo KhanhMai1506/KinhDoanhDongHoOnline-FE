@@ -51,6 +51,7 @@
                 <hr />
 
                 <!-- Grid sản phẩm -->
+
                 <div class="row product-grid">
                     <template v-for="(value, index) in paginatedProducts" :key="index">
                         <div class="col-lg-4 col-md-6 mt-3 d-flex">
@@ -75,20 +76,20 @@
                                                     <span class="text-danger">-{{ value.phan_tram }}%</span>
                                                 </template>
 
-                                                <!-- Nếu không flash sale -->
-                                                <template v-else>
-                                                    <span class="text-danger fw-bold fs-5">
-                                                        {{ formatCurrency(value.gia_ban) }}
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </router-link>
+                                <!-- Nếu không flash sale -->
+                                <template v-else>
+                                    <span class="text-danger fw-bold fs-5">
+                                        {{ formatCurrency(value.gia_ban) }}
+                                    </span>
+                                </template>
+                            </div>
                         </div>
-                    </template>
+                    </div>
                 </div>
+            </router-link>
+        </div>
+    </template>
+</div>
 
                 <!-- Phân trang -->
                 <div class="mt-3 d-flex justify-content-center align-items-center">
