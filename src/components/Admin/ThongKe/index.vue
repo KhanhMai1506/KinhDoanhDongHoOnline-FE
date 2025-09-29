@@ -123,10 +123,27 @@ export default {
     },
     methods: {
         sendBE() {
+            // ✅ Reset dữ liệu trước mỗi lần nhấn
+            this.listDanhMuc = [];
+            this.listDaBan = [];
             this.isLoadDanhMuc = false;
             this.isLoadDaBan = false;
 
-            // Gọi API thống kê danh mục
+            // ✅ Kiểm tra nhập đủ ngày
+            if (!this.x.tu_ngay || !this.x.den_ngay) {
+                this.$toast.warning("Vui lòng chọn đủ từ ngày và đến ngày!");
+                return;
+            }
+
+            const tu = new Date(this.x.tu_ngay);
+            const den = new Date(this.x.den_ngay);
+
+            if (tu > den) {
+                this.$toast.error("Từ ngày không được lớn hơn đến ngày!");
+                return;
+            }
+
+            // ✅ Nếu hợp lệ thì gọi API
             axios.post("http://127.0.0.1:8000/api/admin/thong-ke-1", this.x, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("token_admin") },
             }).then((res) => {
@@ -136,7 +153,6 @@ export default {
                 this.isLoadDanhMuc = true;
             });
 
-            // Gọi API thống kê đã bán
             axios.post("http://127.0.0.1:8000/api/admin/thong-ke-da-ban", this.x, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("token_admin") },
             }).then((res) => {
@@ -145,7 +161,9 @@ export default {
                 this.chartDataDaBan.datasets[0].data = res.data.array_so_luong_ban;
                 this.isLoadDaBan = true;
             });
-        },
-    },
+        }
+    }
+
+
 };
 </script>
