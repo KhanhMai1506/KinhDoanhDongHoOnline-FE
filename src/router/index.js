@@ -32,6 +32,7 @@ const routes = [
         path: '/tu-van',
         component: () => import('../components/Chatbot/index.vue'),
         meta: { layout: 'cdio' },
+        beforeEnter: kiemTraKhachHang,
     },
 
 
@@ -39,6 +40,7 @@ const routes = [
         path: '/chat',
         component: () => import('../components/Chat/index.vue'),
         meta: { layout: 'cdio' },
+        beforeEnter: kiemTraKhachHang,
     },
 
     {
