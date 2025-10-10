@@ -20,6 +20,7 @@
                                 <th>Thanh Toán</th>
                                 <th>Tình Trạng Đơn Hàng</th>
                                 <th>Hủy Đơn Hàng</th>
+                                <th>Xác Nhận</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +48,6 @@
                                         Chưa Thanh Toán
                                     </button>
                                 </td>
-
                                 <td class="text-center">
                                     <button v-if="v.tinh_trang == 0" class="btn btn-warning w-100">Chờ Xử Lý</button>
                                     <button v-else-if="v.tinh_trang == 1" class="btn btn-success w-100">Đã Xác
@@ -58,9 +58,19 @@
                                     <button v-else class="btn btn-danger w-100">Đã Hủy</button>
                                 </td>
                                 <td class="text-center">
-                                    <i data-bs-toggle="modal" data-bs-target="#delModal"
-                                        v-on:click="delete_don_hang = v" class="fa-solid fa-trash fa-2xl"
-                                        style="color: red;"></i>
+                                    <i :data-bs-toggle="v.tinh_trang != 3 ? 'modal' : null"
+                                        :data-bs-target="v.tinh_trang != 3 ? '#delModal' : null"
+                                        @click="v.tinh_trang != 3 ? (delete_don_hang = v) : null"
+                                        class="fa-solid fa-trash fa-2xl"
+                                        :style="{ color: v.tinh_trang != 3 ? 'red' : 'gray', cursor: v.tinh_trang != 3 ? 'pointer' : 'not-allowed' }">
+                                    </i>
+                                </td>
+
+                                <td class="text-center">
+                                    <button v-if="v.tinh_trang != 2" disabled class="btn btn-outline-primary w-100">Xác
+                                        nhận đã giao</button>
+                                    <button v-else v-on:click="xacNhanDaGiao(v)"
+                                        class="btn btn-outline-primary w-100">Xác nhận đã giao</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -142,7 +152,26 @@ export default {
                         this.$toast.error("Có lỗi xảy ra khi hủy đơn hàng!");
                     }
                 });
+        },
+        xacNhanDaGiao(donHang) {
+            axios.put(`http://127.0.0.1:8000/api/khach-hang/xac-nhan-da-giao/${donHang.id}`, {}, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_khach_hang")
+                }
+            })
+                .then((res) => {
+                    this.$toast.success(res.data.message || "Xác nhận đã giao thành công!");
+                    this.layData(); // load lại danh sách
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        this.$toast.error(err.response.data.message);
+                    } else {
+                        this.$toast.error("Có lỗi xảy ra khi xác nhận!");
+                    }
+                });
         }
+
     },
 }
 </script>
