@@ -336,11 +336,9 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.$toast.success(res.data.message);
-                        // Cập nhật link + bust cache
                         this.profile.hinh_anh = res.data.data.hinh_anh + '?t=' + new Date().getTime();
                         localStorage.setItem("khach_hang", JSON.stringify(this.profile));
 
-                        // Bắn sự kiện để header cập nhật ngay
                         window.dispatchEvent(new Event("avatarUpdated"));
                     } else {
                         this.$toast.error(res.data.message);
