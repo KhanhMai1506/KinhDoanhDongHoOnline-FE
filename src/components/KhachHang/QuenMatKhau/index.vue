@@ -43,22 +43,31 @@ export default {
         }
     },
     methods: {
-        gui(){
-            axios
-                .post("http://127.0.0.1:8000/api/khach-hang/quen-mat-khau", this.khach_hang)
-                .then((res) => {
-                    if (res.data.status) {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.success(thong_bao);
-                        this.$router.push('/khach-hang/dang-nhap')
-                    } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.error(thong_bao);
-                        //this.$router.push('/khach-hang/dang-ky');
-
-                    }
-                })
+        gui() {
+  axios
+    .post("http://127.0.0.1:8000/api/khach-hang/quen-mat-khau", this.khach_hang)
+    .then((res) => {
+      // Xử lý khi API trả về status true/false
+      if (res.data.status) {
+        this.$toast.success(`<b>Thông báo</b><br>${res.data.message}`);
+        this.$router.push('/khach-hang/dang-nhap');
+      } else {
+        this.$toast.error(`<b>Thông báo</b><br>${res.data.message}`);
+      }
+    })
+    .catch((error) => {
+      // 🧠 Xử lý lỗi từ Laravel FormRequest (422)
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        for (const field in errors) {
+          this.$toast.error(errors[field][0]); // hiển thị từng lỗi
         }
+      } else {
+        // Các lỗi khác (500, 404,...)
+        this.$toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+      }
+    });
+}
     },
 }
 
