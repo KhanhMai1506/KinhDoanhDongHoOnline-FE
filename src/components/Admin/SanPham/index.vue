@@ -65,10 +65,11 @@
                                             class="btn btn-warning mb-2 d-block">Bình Thường</button>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <button v-on:click="Object.assign(edit_san_pham, value)" class="btn btn-primary me-2" data-bs-toggle="modal"
+                                        <button v-on:click="Object.assign(edit_san_pham, value)"
+                                            class="btn btn-primary me-2" data-bs-toggle="modal"
                                             data-bs-target="#suaSP">Cập nhật</button>
-                                        <button v-on:click="del_san_pham = value" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#delSP">Xóa</button>
+                                        <button v-on:click="del_san_pham = value" class="btn btn-danger"
+                                            data-bs-toggle="modal" data-bs-target="#delSP">Xóa</button>
                                     </td>
                                 </tr>
                             </template>
@@ -132,9 +133,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button v-on:click="themMoiSanPham()" type="button" class="btn btn-primary"
-                            data-bs-dismiss="modal">Thêm
-                            mới</button>
+                        <button v-on:click="themMoiSanPham()" type="button" class="btn btn-primary">Thêm Mới</button>
                     </div>
                 </div>
             </div>
@@ -193,7 +192,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button v-on:click="suaSanPham()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Cập Nhật</button>
+                        <button v-on:click="suaSanPham()" type="button" class="btn btn-primary">Cập Nhật</button>
                     </div>
                 </div>
             </div>
@@ -220,7 +219,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button v-on:click="xoaSanPham()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Xóa</button>
+                        <button v-on:click="xoaSanPham()" type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Xóa</button>
                     </div>
                 </div>
             </div>
@@ -386,6 +386,27 @@ export default {
                 });
         },
         themMoiSanPham() {
+            const requiredFields = [
+                "ten_san_pham",
+                "so_luong",
+                "hinh_anh",
+                "mo_ta_ngan",
+                "tinh_trang",
+                "gia_ban",
+                "id_danh_muc"
+            ];
+
+            // Kiểm tra rỗng
+            for (const field of requiredFields) {
+                if (
+                    this.create_san_pham[field] === undefined ||
+                    this.create_san_pham[field] === null ||
+                    this.create_san_pham[field].toString().trim() === ''
+                ) {
+                    this.$toast.warning("Vui lòng nhập đầy đủ tất cả các trường bắt buộc!");
+                    return;
+                }
+            }
             axios
                 .post("http://127.0.0.1:8000/api/admin/san-pham/create", this.create_san_pham, {
                     headers: {
@@ -397,6 +418,9 @@ export default {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.loadSanPham();
+
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('themSP'));
+                        if (modal) modal.hide();
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
@@ -404,6 +428,28 @@ export default {
                 })
         },
         suaSanPham() {
+            const requiredFields = [
+                "ten_san_pham",
+                "so_luong",
+                "hinh_anh",
+                "mo_ta_ngan",
+                "tinh_trang",
+                "gia_ban",
+                "id_danh_muc"
+            ];
+
+            // Kiểm tra rỗng
+            for (const field of requiredFields) {
+                if (
+                    this.create_san_pham[field] === undefined ||
+                    this.create_san_pham[field] === null ||
+                    this.create_san_pham[field].toString().trim() === ''
+                ) {
+                    this.$toast.warning("Vui lòng nhập đầy đủ tất cả các trường bắt buộc!");
+                    return;
+                }
+            }
+
             axios
                 .post("http://127.0.0.1:8000/api/admin/san-pham/update", this.edit_san_pham, {
                     headers: {
@@ -415,6 +461,9 @@ export default {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.loadSanPham();
+
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('suaSP'));
+                        if (modal) modal.hide();
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);

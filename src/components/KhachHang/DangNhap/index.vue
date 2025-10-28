@@ -103,8 +103,8 @@ export default {
             localStorage.setItem("token_khach_hang", res.data.token);
             localStorage.setItem("ten_kh", res.data.ten_kh);
 
-            // this.$toast?.success("Đăng nhập thành công!");
-            // this.$router.replace('/khach-hang/profile');
+             this.$toast?.success("Đăng nhập thành công!");
+             this.$router.replace('/khach-hang/profile');
           } else {
             this.$toast?.error(res.data.message);
           }

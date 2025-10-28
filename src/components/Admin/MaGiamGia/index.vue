@@ -182,8 +182,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button v-on:click="capnhatMaGiamGia()" type="button" class="btn btn-primary"
-                            data-bs-dismiss="modal">Cập
+                        <button v-on:click="capnhatMaGiamGia()" type="button" class="btn btn-primary">Cập
                             nhật</button>
                     </div>
                 </div>
@@ -219,6 +218,59 @@ export default {
                 })
         },
         themMoiMaGiamGia() {
+            const requiredFields = [
+                'code',
+                'ngay_bat_dau',
+                'ngay_ket_thuc',
+                'loai_giam_gia',
+                'so_giam_gia',
+                'don_hang_toi_thieu',
+                'tinh_trang'
+            ];
+
+            // Kiểm tra rỗng
+            for (const field of requiredFields) {
+                if (
+                    this.create_ma_giam_gia[field] === undefined ||
+                    this.create_ma_giam_gia[field] === null ||
+                    this.create_ma_giam_gia[field].toString().trim() === ''
+                ) {
+                    this.$toast.warning("Vui lòng nhập đầy đủ tất cả các trường bắt buộc!");
+                    return;
+                }
+            }
+
+            // ✅ Kiểm tra logic theo loại giảm
+            if (this.create_ma_giam_gia.loai_giam_gia == 0) {
+                // Giảm %
+                if (
+                    this.create_ma_giam_gia.so_tien_toi_da === undefined ||
+                    this.create_ma_giam_gia.so_tien_toi_da === null ||
+                    this.create_ma_giam_gia.so_tien_toi_da.toString().trim() === '' ||
+                    Number(this.create_ma_giam_gia.so_giam_gia) <= 0 ||
+                    Number(this.create_ma_giam_gia.so_giam_gia) > 100
+                ) {
+                    this.$toast.warning("Vui lòng nhập Số Giảm Giá ( > 0 & <= 100 ) khi chọn Giảm %!");
+                    return;
+                }
+            } else if (this.create_ma_giam_gia.loai_giam_gia == 1) {
+                // Tiền mặt
+                if (Number(this.create_ma_giam_gia.so_tien_toi_da) !== 0) {
+                    this.$toast.warning("Khi chọn Tiền mặt, Số Tiền Tối Đa phải bằng 0!");
+                    return;
+                }
+            }
+
+            // ✅ Kiểm tra logic ngày
+            const bd = new Date(this.create_ma_giam_gia.ngay_bat_dau);
+            const kt = new Date(this.create_ma_giam_gia.ngay_ket_thuc);
+
+            if (bd > kt) {
+                this.$toast.warning("Ngày bắt đầu không được lớn hơn ngày kết thúc!");
+                return;
+            }
+
+            // ✅ Gửi dữ liệu lên server
             axios
                 .post("http://127.0.0.1:8000/api/admin/ma-giam-gia/create", this.create_ma_giam_gia, {
                     headers: {
@@ -227,17 +279,68 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.status) {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.success(thong_bao);
+                        this.$toast.success(res.data.message);
                         this.layDataMaGiamGia();
                         this.create_ma_giam_gia = {};
                     } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.error(thong_bao);
+                        this.$toast.error(res.data.message);
                     }
-                })
+                });
         },
+
         capnhatMaGiamGia() {
+            const requiredFields = [
+                'code',
+                'ngay_bat_dau',
+                'ngay_ket_thuc',
+                'loai_giam_gia',
+                'so_giam_gia',
+                'don_hang_toi_thieu',
+                'tinh_trang'
+            ];
+
+            // 🔍 Kiểm tra rỗng
+            for (const field of requiredFields) {
+                if (
+                    this.edit_ma_giam_gia[field] === undefined ||
+                    this.edit_ma_giam_gia[field] === null ||
+                    this.edit_ma_giam_gia[field].toString().trim() === ''
+                ) {
+                    this.$toast.warning("Vui lòng nhập đầy đủ tất cả các trường bắt buộc!");
+                    return;
+                }
+            }
+
+            // 🔍 Kiểm tra theo loại giảm
+            if (this.edit_ma_giam_gia.loai_giam_gia == 0) {
+                // Giảm %
+                if (
+                    this.edit_ma_giam_gia.so_tien_toi_da === undefined ||
+                    this.edit_ma_giam_gia.so_tien_toi_da === null ||
+                    this.edit_ma_giam_gia.so_tien_toi_da.toString().trim() === '' ||
+                    Number(this.edit_ma_giam_gia.so_giam_gia) <= 0 ||
+                    Number(this.edit_ma_giam_gia.so_giam_gia) > 100
+                ) {
+                    this.$toast.warning("Vui lòng nhập Số Giảm Giá ( > 0 & <= 100 ) khi chọn Giảm %!");
+                    return;
+                }
+            } else if (this.edit_ma_giam_gia.loai_giam_gia == 1) {
+                // Tiền mặt
+                if (Number(this.edit_ma_giam_gia.so_tien_toi_da) !== 0) {
+                    this.$toast.warning("Khi chọn Tiền mặt, Số Tiền Tối Đa phải bằng 0!");
+                    return;
+                }
+            }
+
+            // 🔍 Kiểm tra logic ngày
+            const bd = new Date(this.edit_ma_giam_gia.ngay_bat_dau);
+            const kt = new Date(this.edit_ma_giam_gia.ngay_ket_thuc);
+            if (bd > kt) {
+                this.$toast.warning("Ngày bắt đầu không được lớn hơn ngày kết thúc!");
+                return;
+            }
+
+            // ✅ Gửi request cập nhật
             axios
                 .post("http://127.0.0.1:8000/api/admin/ma-giam-gia/update", this.edit_ma_giam_gia, {
                     headers: {
@@ -245,16 +348,19 @@ export default {
                     }
                 })
                 .then((res) => {
+                    var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                     if (res.data.status) {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.layDataMaGiamGia();
+
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('capnhatDM'));
+                        if (modal) modal.hide();
                     } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
                     }
-                })
+                });
         },
+
         xoaMaGiamGia() {
             axios
                 .post("http://127.0.0.1:8000/api/admin/ma-giam-gia/delete", this.del_ma_giam_gia, {

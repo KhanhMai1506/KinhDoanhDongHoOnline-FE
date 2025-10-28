@@ -8,21 +8,22 @@
                 <div class="card-body">
                     <div class="mb-2">
                         <label>Tên Danh Mục</label>
-                        <input v-on:blur="checkSlug()" v-model="create_danh_muc.ten_danh_muc" v-on:change="taoSlugDM()"
+                        <input v-on:blur="checkSlug()" v-model="create_danh_muc.ten_danh_muc" v-on:input="taoSlugDM()"
                             type="text" class="form-control mt-2">
                     </div>
                     <div class="mb-2">
                         <label>Slug Danh Mục</label>
-                        <input v-on:blur="checkSlug()" v-model="create_danh_muc.slug_danh_muc" type="text"
-                            class="form-control mt-2">
+                        <input v-model="create_danh_muc.slug_danh_muc" type="text" class="form-control mt-2">
                     </div>
                     <div class="mb-2">
                         <label>Icon Danh Mục</label>
-                        <input v-model="create_danh_muc.icon_danh_muc" type="text" class="form-control mt-2">
+                        <input v-model="create_danh_muc.icon_danh_muc" @input="checkFormValid()" type="text"
+                            class="form-control mt-2">
                     </div>
                     <div class="mb-2">
                         <label>Tình trạng</label>
-                        <select v-model="create_danh_muc.tinh_trang" class="form-control mt-2">
+                        <select v-model="create_danh_muc.tinh_trang" @change="checkFormValid()"
+                            class="form-control mt-2">
                             <option value="0">Tạm Tắt</option>
                             <option value="1">Hiển Thị</option>
                         </select>
@@ -68,8 +69,10 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         <i data-bs-toggle="modal" data-bs-target="#delModal"
-                                            class="fa-solid fa-trash fa-2xl me-4" v-on:click="del_danh_muc = value" style="color: red;"></i>
-                                        <i data-bs-toggle="modal" data-bs-target="#capnhatDM" v-on:click="Object.assign(edit_danh_muc,value)"
+                                            class="fa-solid fa-trash fa-2xl me-4" v-on:click="del_danh_muc = value"
+                                            style="color: red;"></i>
+                                        <i data-bs-toggle="modal" data-bs-target="#capnhatDM"
+                                            v-on:click="Object.assign(edit_danh_muc, value)"
                                             class="fa-solid fa-pen fa-2xl" style="color: blue;"></i>
                                     </td>
                                 </tr>
@@ -89,12 +92,15 @@
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-danger" role="alert">
-                            Bạn có chắc muốn xóa danh mục <b class="text-danger">{{ del_danh_muc.ten_danh_muc }}</b> này không?
+                            Bạn có chắc muốn xóa danh mục <b class="text-danger">{{ del_danh_muc.ten_danh_muc
+                                }}</b> này
+                            không?
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button v-on:click="xoaDanhMuc()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Xác
+                        <button v-on:click="xoaDanhMuc()" type="button" class="btn btn-primary"
+                            data-bs-dismiss="modal">Xác
                             nhận</button>
                     </div>
                 </div>
@@ -110,7 +116,7 @@
                     <div class="modal-body">
                         <div class="mb-2">
                             <label>Tên Danh Mục</label>
-                            <input v-model="edit_danh_muc.ten_danh_muc" type="text" class="form-control mt-2">
+                            <input v-model="edit_danh_muc.ten_danh_muc" v-on:input="taoSlugEdit()" type="text" class="form-control mt-2">
                         </div>
                         <div class="mb-2">
                             <label>Slug Danh Mục</label>
@@ -131,7 +137,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button v-on:click="capnhatDanhMuc()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Cập
+                        <button v-on:click="capnhatDanhMuc()" type="button" class="btn btn-primary">Cập
                             nhật</button>
                     </div>
                 </div>
@@ -155,13 +161,14 @@ export default {
             del_danh_muc: {
                 "ten_danh_muc": ""
             },
-            is_them_moi: 0,
             edit_danh_muc: {
                 "ten_danh_muc": "",
                 "slug_danh_muc": "",
                 "icon_danh_muc": "",
                 "tinh_trang": "",
             },
+            is_them_moi: 0,
+            is_ten_hop_le: false,
         }
     },
     mounted() {
@@ -217,6 +224,17 @@ export default {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.loadDanhMuc();
+
+                        this.create_danh_muc = {
+                            ten_danh_muc: "",
+                            slug_danh_muc: "",
+                            icon_danh_muc: "",
+                            tinh_trang: "",
+                        };
+
+                        // ✅ Reset lại trạng thái form
+                        this.is_them_moi = 0;
+                        this.is_ten_hop_le = false;
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
@@ -224,23 +242,41 @@ export default {
                 })
         },
         checkSlug() {
-            axios
-                .post("http://127.0.0.1:8000/api/admin/danh-muc/checkSlug", this.create_danh_muc, {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem("token_admin")
-                    }
-                })
+            // Chỉ kiểm tra nếu người dùng đã nhập tên
+            if (!this.create_danh_muc.ten_danh_muc.trim()) {
+                this.$toast.warning("Vui lòng nhập tên danh mục trước!");
+                this.is_ten_hop_le = false;
+                this.is_them_moi = 0;
+                return;
+            }
+
+            axios.post("http://127.0.0.1:8000/api/admin/danh-muc/checkSlug", this.create_danh_muc, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("token_admin")
+                }
+            })
                 .then((res) => {
                     if (res.data.status) {
-                        this.is_them_moi = res.data.status;
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.success(thong_bao);
+                        // ✅ Tên có thể sử dụng
+                        this.$toast.success("Tên danh mục có thể sử dụng!");
+                        this.is_ten_hop_le = true;
                     } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.error(thong_bao);
+                        // ❌ Tên bị trùng
+                        this.$toast.error("Tên danh mục đã tồn tại!");
+                        this.is_ten_hop_le = false;
                     }
 
+                    // ✅ Kiểm tra xem đủ điều kiện bật nút Thêm chưa
+                    this.checkFormValid();
                 })
+                .catch(() => {
+                    this.$toast.error("Không thể kiểm tra slug!");
+                    this.is_ten_hop_le = false;
+                    this.is_them_moi = 0;
+                });
+        },
+        taoSlugEdit() {
+            this.edit_danh_muc.slug_danh_muc = this.toSluggg(this.edit_danh_muc.ten_danh_muc);
         },
         taoSlugDM() {
             this.create_danh_muc.slug_danh_muc = this.toSluggg(this.create_danh_muc.ten_danh_muc)
@@ -272,23 +308,42 @@ export default {
             return slug;
         },
         capnhatDanhMuc() {
+            // Kiểm tra rỗng trước khi gửi
+            const dm = this.edit_danh_muc;
+
+            if (
+                !dm.ten_danh_muc || dm.ten_danh_muc.trim() === "" ||
+                !dm.slug_danh_muc || dm.slug_danh_muc.trim() === "" ||
+                !dm.icon_danh_muc || dm.icon_danh_muc.trim() === "" ||
+                dm.tinh_trang === "" || dm.tinh_trang === null || dm.tinh_trang === undefined
+            ) {
+                this.$toast.warning("Vui lòng nhập đầy đủ thông tin trước khi cập nhật!");
+                return;
+            }
+
+            // Nếu dữ liệu hợp lệ thì gửi request
             axios
-                .post("http://127.0.0.1:8000/api/admin/danh-muc/update", this.edit_danh_muc, {
+                .post("http://127.0.0.1:8000/api/admin/danh-muc/update", dm, {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem("token_admin")
                     }
                 })
                 .then((res) => {
+                    var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                     if (res.data.status) {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.loadDanhMuc();
                     } else {
-                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
                     }
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('capnhatDM'));
+                    if (modal) modal.hide();
                 })
+                .catch(() => {
+                    this.$toast.error("Không thể kết nối tới server!");
+                });
         },
+
         xoaDanhMuc() {
             axios
                 .post("http://127.0.0.1:8000/api/admin/danh-muc/delete", this.del_danh_muc, {
@@ -306,6 +361,21 @@ export default {
                         this.$toast.error(thong_bao);
                     }
                 })
+        },
+
+        checkFormValid() {
+            const dm = this.create_danh_muc;
+            if (
+                this.is_ten_hop_le &&
+                dm.ten_danh_muc.trim() !== "" &&
+                dm.slug_danh_muc.trim() !== "" &&
+                dm.icon_danh_muc.trim() !== "" &&
+                dm.tinh_trang !== ""
+            ) {
+                this.is_them_moi = 1; // ✅ bật nút thêm
+            } else {
+                this.is_them_moi = 0; // ❌ tắt nút thêm
+            }
         },
 
     },
