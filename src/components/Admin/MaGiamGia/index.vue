@@ -270,6 +270,17 @@ export default {
                 return;
             }
 
+            // ⚠️ Kiểm tra trùng mã code
+            const codeMoi = this.create_ma_giam_gia.code.trim().toUpperCase();
+            const trung = this.list_ma_giam_gia.some(
+                (item) => item.code.trim().toUpperCase() === codeMoi
+            );
+
+            if (trung) {
+                this.$toast.warning("Mã giảm giá này đã tồn tại, vui lòng nhập mã khác!");
+                return;
+            }
+
             // ✅ Gửi dữ liệu lên server
             axios
                 .post("http://127.0.0.1:8000/api/admin/ma-giam-gia/create", this.create_ma_giam_gia, {
