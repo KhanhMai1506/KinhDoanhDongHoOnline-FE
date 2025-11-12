@@ -77,8 +77,8 @@
                                 <tr>
                                     <th class="align-middle">{{ index + 1 }}</th>
                                     <td class="align-middle">{{ value.code }}</td>
-                                    <td class="align-middle text-center">{{ value.ngay_bat_dau }}</td>
-                                    <td class="align-middle text-center">{{ value.ngay_ket_thuc }}</td>
+                                    <td class="align-middle text-center">{{ formatDate(value.ngay_bat_dau) }}</td>
+                                    <td class="align-middle text-center">{{ formatDate(value.ngay_ket_thuc) }}</td>
                                     <td class="align-middle">
                                         <template v-if="value.loai_giam_gia == 0">
                                             Giảm %
@@ -408,6 +408,11 @@ export default {
                         this.$toast.error(thong_bao);
                     }
                 })
+        },
+        formatDate(datetime) {
+            if (!datetime) return '';
+            const date = new Date(datetime);
+            return date.toLocaleDateString('vi-VN');
         },
     },
 }
