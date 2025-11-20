@@ -441,9 +441,9 @@ export default {
             // Kiểm tra rỗng
             for (const field of requiredFields) {
                 if (
-                    this.create_san_pham[field] === undefined ||
-                    this.create_san_pham[field] === null ||
-                    this.create_san_pham[field].toString().trim() === ''
+                    this.edit_san_pham[field] === undefined ||
+                    this.edit_san_pham[field] === null ||
+                    this.edit_san_pham[field].toString().trim() === ''
                 ) {
                     this.$toast.warning("Vui lòng nhập đầy đủ tất cả các trường bắt buộc!");
                     return;
