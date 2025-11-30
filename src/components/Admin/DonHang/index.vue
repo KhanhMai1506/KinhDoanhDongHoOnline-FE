@@ -15,6 +15,8 @@
                                 <th>Số Điện Thoại</th>
                                 <th>Địa Chỉ</th>
                                 <th>Tổng Tiền Thanh Toán</th>
+                                <th>Ngày Lập</th>
+                                <th>Phương Thức</th>
                                 <th>Thanh Toán</th>
                                 <th>Tình Trạng Đơn Hàng</th>
                             </tr>
@@ -27,8 +29,17 @@
                                 <td class="text-center">{{ v.so_dien_thoai }}</td>
                                 <td>{{ v.dia_chi }}</td>
                                 <td class="text-end">{{ formatCurrency(v.thanh_tien) }}</td>
+                                <td class="text-center">{{ formatDate(v.created_at) }}</td>
                                 <td class="text-center">
-                                    <button v-if="v.is_thanh_toan == 1" class="btn btn-success w-100">Đã Thanh
+                                    <button v-if="v.phuong_thuc == 0" class="btn btn-success w-100">Thanh Toán
+                                        Online</button>
+                                    <button v-else class="btn btn-info w-100">Thanh Toán COD</button>
+                                </td>
+                                <td class="text-center">
+                                    <button v-if="v.tinh_trang == 5" class="btn btn-warning w-100">
+                                        Đang Hoàn Tiền
+                                    </button>
+                                    <button v-else-if="v.is_thanh_toan == 1" class="btn btn-success w-100">Đã Thanh
                                         Toán</button>
                                     <button v-else class="btn btn-danger w-100">Chưa Thanh Toán</button>
                                 </td>
@@ -43,8 +54,8 @@
                                         Chuyển</button>
                                     <button v-on:click="thayDoiTinhTrang(v)" v-else-if="v.tinh_trang == 3"
                                         class="btn btn-primary w-100">Đã Giao</button>
-                                    <button v-on:click="thayDoiTinhTrang(v)" v-else class="btn btn-danger w-100">Đã
-                                        Hủy</button>
+                                    <button v-on:click="thayDoiTinhTrang(v)" v-else
+                                        class="btn btn-danger w-100">Đã Hủy</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -85,15 +96,25 @@ export default {
                 currency: 'VND'
             }).format(value);
         },
+        formatDate(datetime) {
+            if (!datetime) return '';
+            const date = new Date(datetime);
+            return date.toLocaleDateString('vi-VN');
+        },
         thayDoiTinhTrang(donHang) {
-            // Nếu tình trạng đã là 4 (Đã hủy) thì không cho đổi nữa
+            // Nếu đơn hàng đã hủy thì không cho đổi nữa
             if (donHang.tinh_trang === 4) {
                 this.$toast.error("Đơn hàng đã hủy. Không thể thay đổi!");
                 return;
             }
 
-            // Tăng tình trạng thêm 1 (tối đa 3), sau đó mới chuyển sang 4 nếu cần
-            let newTinhTrang = donHang.tinh_trang < 3 ? donHang.tinh_trang + 1 : 4;
+            // Chỉ cho tăng đến tối đa tình trạng 3 (Đã giao)
+            if (donHang.tinh_trang >= 3) {
+                this.$toast.warning("Đơn hàng đã ở trạng thái cuối cùng!");
+                return;
+            }
+
+            let newTinhTrang = donHang.tinh_trang + 1;
 
             axios.put(`http://127.0.0.1:8000/api/admin/cap-nhat-tinh-trang/${donHang.id}`,
                 { tinh_trang: newTinhTrang },
@@ -106,7 +127,7 @@ export default {
                 .then((res) => {
                     donHang.tinh_trang = newTinhTrang; // cập nhật UI
                     if (newTinhTrang === 3) {
-                        donHang.is_thanh_toan = 1;
+                        donHang.is_thanh_toan = 1; // Đã giao thì tự đánh dấu đã thanh toán
                     }
                     this.$toast.success("Cập nhật tình trạng thành công!");
                 })
@@ -115,8 +136,6 @@ export default {
                     this.$toast.error("Có lỗi xảy ra khi cập nhật!");
                 });
         }
-
-
     },
 }
 </script>

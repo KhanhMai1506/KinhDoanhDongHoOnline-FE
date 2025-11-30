@@ -38,16 +38,22 @@
                                     <button v-else class="btn btn-info w-100">Thanh Toán COD</button>
                                 </td>
                                 <td class="text-center">
+                                    <!-- Nếu đang hoàn tiền -->
+                                    <button v-if="v.tinh_trang == 5" class="btn btn-warning w-100">
+                                        Đang Hoàn Tiền
+                                    </button>
+
                                     <!-- Đã thanh toán -->
-                                    <button v-if="v.is_thanh_toan == 1" class="btn btn-success w-100">
+                                    <button v-else-if="v.is_thanh_toan == 1" class="btn btn-success w-100">
                                         Đã Thanh Toán
                                     </button>
 
-                                    <!-- Chưa thanh toán + MoMo => cho phép bấm để thanh toán lại -->
+                                    <!-- Chưa thanh toán -->
                                     <button v-else class="btn btn-danger w-100">
                                         Chưa Thanh Toán
                                     </button>
                                 </td>
+
                                 <td class="text-center">
                                     <button v-if="v.tinh_trang == 0" class="btn btn-warning w-100">Chờ Xử Lý</button>
                                     <button v-else-if="v.tinh_trang == 1" class="btn btn-success w-100">Đã Xác
@@ -58,12 +64,15 @@
                                     <button v-else class="btn btn-danger w-100">Đã Hủy</button>
                                 </td>
                                 <td class="text-center">
-                                    <i :data-bs-toggle="v.tinh_trang != 3 ? 'modal' : null"
-                                        :data-bs-target="v.tinh_trang != 3 ? '#delModal' : null"
-                                        @click="v.tinh_trang != 3 ? (delete_don_hang = v) : null"
-                                        class="fa-solid fa-trash fa-2xl"
-                                        :style="{ color: v.tinh_trang != 3 ? 'red' : 'gray', cursor: v.tinh_trang != 3 ? 'pointer' : 'not-allowed' }">
+                                    <i :data-bs-toggle="(v.tinh_trang != 3 && v.tinh_trang != 5 && v.tinh_trang == 0) ? 'modal' : null"
+                                        :data-bs-target="(v.tinh_trang != 3 && v.tinh_trang != 5 && v.tinh_trang == 0) ? '#delModal' : null"
+                                        @click="(v.tinh_trang != 3 && v.tinh_trang != 5 && v.tinh_trang == 0) ? (delete_don_hang = v) : null"
+                                        class="fa-solid fa-trash fa-2xl" :style="{
+                                            color: (v.tinh_trang != 3 && v.tinh_trang != 5 && v.tinh_trang == 0) ? 'red' : 'gray',
+                                            cursor: (v.tinh_trang != 3 && v.tinh_trang != 5 && v.tinh_trang == 0) ? 'pointer' : 'not-allowed'
+                                        }">
                                     </i>
+
                                 </td>
 
                                 <td class="text-center">

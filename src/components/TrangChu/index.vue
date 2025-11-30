@@ -56,7 +56,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-lg-12 col-md-12">
-            <div class="row">
+            <div class="row ">
                 <template v-for="(value, index) in list_danh_muc" :key="index">
                     <div class="col-lg-3 mb-2 d-flex">
                         <div class="card flex-fill">

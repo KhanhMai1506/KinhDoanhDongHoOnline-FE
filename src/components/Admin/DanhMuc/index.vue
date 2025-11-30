@@ -21,6 +21,14 @@
                             class="form-control mt-2">
                     </div>
                     <div class="mb-2">
+                        <label>Danh Mục Cha</label>
+                        <select v-model="create_danh_muc.id_cha" @change="checkFormValid()" class="form-control mt-2">
+                            <option v-for="(value, index) in list_danh_muc_cha" :key="index" :value="value.id">
+                                {{ value.ten_danh_muc }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
                         <label>Tình trạng</label>
                         <select v-model="create_danh_muc.tinh_trang" @change="checkFormValid()"
                             class="form-control mt-2">
@@ -55,7 +63,7 @@
                         <tbody>
                             <template v-for="(value, index) in list_danh_muc" :key="index">
                                 <tr>
-                                    <th class="align-middle">{{ index + 1 }}</th>
+                                    <th class="align-middle text-center">{{ index + 1 }}</th>
                                     <td class="align-middle">{{ value.ten_danh_muc }}</td>
                                     <td class="align-middle">{{ value.slug_danh_muc }}</td>
                                     <td class="align-middle text-center">
@@ -93,7 +101,7 @@
                     <div class="modal-body">
                         <div class="alert alert-danger" role="alert">
                             Bạn có chắc muốn xóa danh mục <b class="text-danger">{{ del_danh_muc.ten_danh_muc
-                                }}</b> này
+                            }}</b> này
                             không?
                         </div>
                     </div>
@@ -116,7 +124,8 @@
                     <div class="modal-body">
                         <div class="mb-2">
                             <label>Tên Danh Mục</label>
-                            <input v-model="edit_danh_muc.ten_danh_muc" v-on:input="taoSlugEdit()" type="text" class="form-control mt-2">
+                            <input v-model="edit_danh_muc.ten_danh_muc" v-on:input="taoSlugEdit()" type="text"
+                                class="form-control mt-2">
                         </div>
                         <div class="mb-2">
                             <label>Slug Danh Mục</label>
@@ -125,6 +134,14 @@
                         <div class="mb-2">
                             <label>Icon Danh Mục</label>
                             <input v-model="edit_danh_muc.icon_danh_muc" type="text" class="form-control mt-2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Danh Mục Cha</label>
+                            <select v-model="edit_danh_muc.id_cha" class="form-control mt-2">
+                                <option v-for="(value, index) in list_danh_muc_cha" :key="index" :value="value.id">
+                                    {{ value.ten_danh_muc }}
+                                </option>
+                            </select>
                         </div>
                         <div class="mb-2">
                             <label>Tình trạng</label>
@@ -152,6 +169,7 @@ export default {
     data() {
         return {
             list_danh_muc: [],
+            list_danh_muc_cha: [],
             create_danh_muc: {
                 "ten_danh_muc": "",
                 "slug_danh_muc": "",
@@ -184,6 +202,7 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.list_danh_muc = res.data.data;
+                        this.list_danh_muc_cha = res.data.danhmuccha;
                     } else {
                         this.$toast.error(res.data.message);
                         this.$router.push('/');
@@ -212,6 +231,19 @@ export default {
                     }
                 })
         },
+        checkFormValid() {
+            const dm = this.create_danh_muc;
+            if (
+                this.is_ten_hop_le &&
+                dm.ten_danh_muc.trim() !== "" &&
+                dm.slug_danh_muc.trim() !== "" &&
+                dm.tinh_trang !== ""
+            ) {
+                this.is_them_moi = 1; // ✅ bật nút thêm
+            } else {
+                this.is_them_moi = 0; // ❌ tắt nút thêm
+            }
+        },
         themMoiDanhMuc() {
             axios
                 .post("http://127.0.0.1:8000/api/admin/danh-muc/create", this.create_danh_muc, {
@@ -229,6 +261,7 @@ export default {
                             ten_danh_muc: "",
                             slug_danh_muc: "",
                             icon_danh_muc: "",
+                            id_cha: "",
                             tinh_trang: "",
                         };
 
@@ -314,7 +347,6 @@ export default {
             if (
                 !dm.ten_danh_muc || dm.ten_danh_muc.trim() === "" ||
                 !dm.slug_danh_muc || dm.slug_danh_muc.trim() === "" ||
-                !dm.icon_danh_muc || dm.icon_danh_muc.trim() === "" ||
                 dm.tinh_trang === "" || dm.tinh_trang === null || dm.tinh_trang === undefined
             ) {
                 this.$toast.warning("Vui lòng nhập đầy đủ thông tin trước khi cập nhật!");
@@ -362,22 +394,6 @@ export default {
                     }
                 })
         },
-
-        checkFormValid() {
-            const dm = this.create_danh_muc;
-            if (
-                this.is_ten_hop_le &&
-                dm.ten_danh_muc.trim() !== "" &&
-                dm.slug_danh_muc.trim() !== "" &&
-                dm.icon_danh_muc.trim() !== "" &&
-                dm.tinh_trang !== ""
-            ) {
-                this.is_them_moi = 1; // ✅ bật nút thêm
-            } else {
-                this.is_them_moi = 0; // ❌ tắt nút thêm
-            }
-        },
-
     },
 }
 </script>

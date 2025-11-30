@@ -2,15 +2,15 @@
     <div class="nav-container primary-menu">
         <nav class="navbar navbar-expand-xl w-100">
             <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
+                <!-- Trang chủ -->
                 <li class="nav-item">
-                    <router-link :to="'/'">
-                        <a class="nav-link" :href="'/'">
-                            <div class="parent-icon"><i class="fa-solid fa-house-chimney-window"></i>
-                            </div>
-                            <div class="menu-title">Trang Chủ</div>
-                        </a>
+                    <router-link to="/" class="nav-link">
+                        <div class="parent-icon"><i class="fa-solid fa-house-chimney-window"></i></div>
+                        <div class="menu-title">Trang Chủ</div>
                     </router-link>
                 </li>
+
+                <!-- Sản phẩm -->
                 <li class="nav-item dropdown">
                     <a href="" class="nav-link dropdown-toggle dropdown-toggle-nocaret"
                         data-bs-toggle="dropdown">
@@ -28,59 +28,57 @@
                         </template>
                     </ul>
                 </li>
+
+                <!-- Liên hệ -->
                 <li class="nav-item">
-                    <router-link :to="'/lien-he'">
-                        <a class="nav-link" href="">
-                            <div class="parent-icon"><i class="fa-solid fa-phone"></i>
-                            </div>
-                            <div class="menu-title">Liên Hệ</div>
-                        </a>
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="'/tu-van'">
-                        <a class="nav-link" :href="'/tu-van'">
-                            <div class="parent-icon"><i class="fa-brands fa-rocketchat"></i>
-                            </div>
-                            <div class="menu-title">Tư Vấn</div>
-                        </a>
+                    <router-link to="/lien-he" class="nav-link">
+                        <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="menu-title">Liên Hệ</div>
                     </router-link>
                 </li>
 
-
+                <!-- Tư vấn -->
                 <li class="nav-item">
-                    <router-link :to="'/chat'">
-                        <a class="nav-link" :href="'/chat'">
-                            <div class="parent-icon"><i class="fa-solid fa-comments"></i>
-                            </div>
-                            <div class="menu-title">Chat</div>
-                        </a>
+                    <router-link to="/tu-van" class="nav-link">
+                        <div class="parent-icon"><i class="fa-brands fa-rocketchat"></i></div>
+                        <div class="menu-title">Tư Vấn</div>
+                    </router-link>
+                </li>
+
+                <!-- Chat -->
+                <li class="nav-item">
+                    <router-link to="/chat" class="nav-link">
+                        <div class="parent-icon"><i class="fa-solid fa-comments"></i></div>
+                        <div class="menu-title">Chat</div>
                     </router-link>
                 </li>
             </ul>
         </nav>
     </div>
 </template>
+
 <script>
-import axios from 'axios';
+import axios from "axios";
+
 export default {
     data() {
         return {
             list_danh_muc: [],
-        }
+        };
     },
     mounted() {
         this.loadDataDanhMuc();
     },
     methods: {
-        loadDataDanhMuc() {
-            axios
-                .get("http://127.0.0.1:8000/api/danh-muc/data-open")
-                .then((res) => {
-                    this.list_danh_muc = res.data.data;
-                });
+        async loadDataDanhMuc() {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/danh-muc/data-open");
+                this.list_danh_muc = res.data.data;
+            } catch (error) {
+                console.error("Lỗi khi tải danh mục:", error);
+            }
         },
     },
-}
+};
 </script>
-<style></style>
+

@@ -25,6 +25,7 @@
                                 <th class="text-center align-middle">#</th>
                                 <th class="text-center align-middle">Hình Ảnh</th>
                                 <th class="text-center align-middle">Tên Sản Phẩm</th>
+                                <th class="text-center align-middle">Slug Danh Mục</th>
                                 <th class="text-center align-middle">Số Lượng</th>
                                 <th class="text-center align-middle">Giá Bán</th>
                                 <th class="text-center align-middle">Mô Tả</th>
@@ -41,6 +42,9 @@
                                             alt="">
                                     </th>
                                     <td class="align-middle text-wrap">{{ value.ten_san_pham }}</td>
+                                    <td class="align-middle text-wrap">
+                                        {{ timSlugDanhMuc(value.id_danh_muc) }}
+                                    </td>
                                     <td class="align-middle text-center">{{ value.so_luong }}</td>
                                     <td class="align-middle text-end">{{ formatCurrency(value.gia_ban) }} </td>
                                     <td class="align-middle text-center">
@@ -116,12 +120,17 @@
                                 </div>
                                 <div class="mb-2">
                                     <label>Danh Mục</label>
-                                    <select class="form-control mt-2" v-model="create_san_pham.id_danh_muc">
-                                        <option v-for="(value, index) in list_danh_muc" :key="index" :value="value.id">
-                                            {{ value.ten_danh_muc }}
-                                        </option>
-                                    </select>
+                                    <select v-model="create_san_pham.id_danh_muc" class="form-select">
+                                        <optgroup v-for="dm in list_danh_muc.filter(x => x.id_cha === null)"
+                                            :key="dm.id" :label="dm.ten_danh_muc">
 
+                                            <option v-for="child in list_danh_muc.filter(x => x.id_cha === dm.id)"
+                                                :key="child.id" :value="child.id">
+                                                {{ child.ten_danh_muc }}
+                                            </option>
+
+                                        </optgroup>
+                                    </select>
                                 </div>
                                 <div class="mb-2">
                                     <label>Mô Tả</label>
@@ -318,6 +327,18 @@ export default {
                     this.$router.push('/');
                 });
         },
+        timSlugDanhMuc(id_danh_muc) {
+            if (!id_danh_muc) return ""; // Nếu sản phẩm chưa có danh mục
+
+            // Tìm danh mục trong list_danh_muc đã load sẵn
+            var danh_muc = this.list_danh_muc.find(x => x.id == id_danh_muc);
+
+            if (danh_muc) {
+                // Trả về slug (kiểm tra lại database của bạn xem cột tên là 'slug' hay 'slug_danh_muc')
+                return danh_muc.slug_danh_muc;
+            }
+            return "Không tìm thấy";
+        },
         chuyenBan(payload) {
             axios
                 .post("http://127.0.0.1:8000/api/admin/san-pham/chuyen-trang-thai-ban", payload, {
@@ -441,9 +462,9 @@ export default {
             // Kiểm tra rỗng
             for (const field of requiredFields) {
                 if (
-                    this.create_san_pham[field] === undefined ||
-                    this.create_san_pham[field] === null ||
-                    this.create_san_pham[field].toString().trim() === ''
+                    this.edit_san_pham[field] === undefined ||
+                    this.edit_san_pham[field] === null ||
+                    this.edit_san_pham[field].toString().trim() === ''
                 ) {
                     this.$toast.warning("Vui lòng nhập đầy đủ tất cả các trường bắt buộc!");
                     return;
