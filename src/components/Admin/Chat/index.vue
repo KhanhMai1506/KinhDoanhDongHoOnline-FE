@@ -27,7 +27,7 @@
               <img
                 :src="
                   conversation.customer_avatar ||
-                  'https://via.placeholder.com/50'
+                  'https://i.pinimg.com//736x//fa//7e//a6//fa7ea6ce4e90b794eef88dde93522dd6.jpg'
                 "
                 alt="avatar"
                 class="avatar"
@@ -41,6 +41,13 @@
               <span class="message-time">
                 {{ formatTime(conversation.last_message_time) }}
               </span>
+
+              <div
+                class="conversation-action"
+                @click="deleteConversation(conversation)"
+              >
+                <i class="fa-regular fa-trash-can"></i>
+              </div>
             </li>
             <div v-if="loadingConversations" class="loading-state">
               Đang tải...
@@ -114,8 +121,11 @@ import {
   addDoc,
   updateDoc,
   serverTimestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import axios from "axios";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 import { db } from "@/firebase";
 
 const CONVERSATION_LIMIT = 20;
@@ -186,7 +196,7 @@ export default {
             );
             return {
               ...conv,
-              customer_name: user ? user.ho_va_ten : "Khách hàng không rõ",
+              customer_name: user ? user.ho_va_ten : "Khách hàng đã bị xoá",
               customer_avatar: user ? user.hinh_anh : null,
             };
           });
@@ -260,6 +270,43 @@ export default {
         console.error("Error fetching conversations:", error);
       } finally {
         this.loadingConversations = false;
+      }
+    },
+
+    async deleteConversation(conversation) {
+      if (!confirm("Bạn có chắc chắn muốn xóa cuộc trò chuyện này?")) {
+        return;
+      }
+
+      try {
+        await deleteDoc(doc(db, "conversation", conversation.id));
+
+        this.conversations = this.conversations.filter(
+          (c) => c.id !== conversation.id
+        );
+        this.filteredConversations = this.filteredConversations.filter(
+          (c) => c.id !== conversation.id
+        );
+
+        if (
+          this.selectedConversation &&
+          this.selectedConversation.id === conversation.id
+        ) {
+          this.selectedConversation = null;
+          this.messages = [];
+
+          if (this.filteredConversations.length > 0) {
+            this.selectConversation(this.filteredConversations[0]);
+          }
+        }
+
+        toast.success("Đã xoá cuộc trò chuyện!", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } catch (error) {
+        console.error("Lỗi khi xóa conversation:", error);
+        toast.error("Lỗi: Không thể xóa cuộc trò chuyện này.");
       }
     },
 
@@ -472,10 +519,22 @@ export default {
 .conversation-items li {
   display: flex;
   align-items: center;
-  padding: 15px;
   cursor: pointer;
   border-bottom: 1px solid #eee;
   transition: background-color 0.2s;
+  position: relative;
+}
+
+.conversation-items li .conversation-info {
+  padding: 15px;
+}
+
+.conversation-items li .avatar {
+  margin-left: 15px;
+}
+
+.conversation-items li .message-time {
+  padding-right: 15px;
 }
 
 .conversation-items li:hover {
@@ -491,7 +550,6 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 15px;
   object-fit: cover;
 }
 
@@ -519,6 +577,39 @@ export default {
 .active-conversation .conversation-info small,
 .active-conversation .message-time {
   color: #fff;
+}
+
+.active-conversation .conversation-info small,
+.active-conversation h6 {
+  color: #fff;
+}
+
+.conversation-action {
+  cursor: pointer;
+  font-size: 16px;
+  color: red;
+  background-color: white;
+  height: 100%;
+  width: 30px;
+  position: absolute;
+  left: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-out;
+}
+
+.conversation-action:hover {
+  background-color: red;
+  color: white;
+}
+
+.conversation-items li:hover .conversation-action {
+  transform: translateX(-100%);
+}
+
+.conversation-items li:hover {
+  padding-right: 30px;
 }
 
 .message-time {
