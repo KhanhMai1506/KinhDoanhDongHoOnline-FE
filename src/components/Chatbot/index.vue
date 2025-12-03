@@ -86,11 +86,29 @@ export default {
 
     async created() {
         this.sessionId = localStorage.getItem('watch_session_id') || null
+        const savedMessages = localStorage.getItem('watch_chat_messages')
+        if (savedMessages) {
+            try {
+                this.messages = JSON.parse(savedMessages)
+            } catch (e) {
+                console.error('Error parsing saved messages:', e)
+            }
+        }
         await this.checkHealth()
     },
 
     mounted() {
         this.focusInput()
+        this.scrollToBottom()
+    },
+
+    watch: {
+        messages: {
+            handler(newMessages) {
+                localStorage.setItem('watch_chat_messages', JSON.stringify(newMessages))
+            },
+            deep: true
+        }
     },
 
     methods: {
@@ -139,6 +157,7 @@ export default {
             this.messages = []
             this.sessionId = null
             localStorage.removeItem('watch_session_id')
+            localStorage.removeItem('watch_chat_messages')
             this.focusInput()
         },
 
