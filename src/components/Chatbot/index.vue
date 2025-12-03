@@ -12,40 +12,42 @@
                 <p>👋 Chào bạn! Tôi là trợ lý AI chuyên tư vấn về đồng hồ.</p>
                 <p>Bạn có thể hỏi về:</p>
                 <ul>
-                    <li>📱 Sản phẩm các thương hiệu (Casio, Seiko, Citizen, Orient)</li>
+                    <li>📱 Sản phẩm các thương hiệu (Casio, Seiko, Citizen...)</li>
                     <li>💰 Giá cả và đặc điểm sản phẩm</li>
                     <li>🛡️ Chính sách bảo hành và đổi trả</li>
                     <li>💳 Hình thức thanh toán</li>
-                    <li>📞 Thông tin liên hệ</li>
                 </ul>
             </div>
 
             <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.sender]">
                 <div class="message-content">
                     <span class="sender-label">{{ msg.sender === 'user' ? '🧑 Bạn:' : '🤖 Trợ lý:' }}</span>
+                    
+                    <!-- Nội dung tin nhắn -->
                     <span v-html="formatMessage(msg.text)"></span>
+
+                    <!-- 3 chấm suy nghĩ được đưa vào trong cùng 1 ô -->
+                    <!-- Chỉ hiện khi đang loading VÀ là tin nhắn cuối cùng của bot -->
+                    <div v-if="isLoading && msg.sender === 'bot' && index === messages.length - 1" class="typing-indicator-wrapper">
+                        <span class="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
                 </div>
                 <div v-if="msg.timestamp" class="message-time">
                     {{ formatTime(msg.timestamp) }}
                 </div>
             </div>
-
-            <div v-if="isLoading" class="message bot">
-                <div class="message-content">
-                    <strong>🤖 Trợ lý:</strong>
-                    <span class="typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                </div>
-            </div>
+            
+            <!-- Đã xóa khối loading riêng biệt ở đây -->
         </div>
 
         <div class="input-container">
             <form @submit.prevent="sendMessage" :class="{ disabled: isLoading }">
-        <input v-model="newMessage" placeholder="Hỏi về đồng hồ, giá cả, chính sách..." @keyup.enter="sendMessage"
-          :disabled="isLoading" ref="messageInput" />
+                <input v-model="newMessage" placeholder="Hỏi về đồng hồ, giá cả, chính sách..."
+                    @keyup.enter="sendMessage" :disabled="isLoading" ref="messageInput" />
                 <button type="submit" :disabled="isLoading || !newMessage.trim()">
                     <span v-if="!isLoading">Gửi</span>
                     <span v-else>⏳</span>
@@ -104,7 +106,6 @@ export default {
 
         formatMessage(text) {
             if (!text) return '';
-            // Chỉ xử lý xuống dòng, giữ nguyên văn bản gốc
             return text.replace(/\n/g, '<br>');
         },
 
@@ -156,6 +157,13 @@ export default {
             this.scrollToBottom()
 
             try {
+                // Tạo trước một tin nhắn rỗng cho bot để stream dữ liệu vào
+                const botIndex = this.messages.push({
+                    sender: 'bot',
+                    text: '', // Ban đầu rỗng
+                    timestamp: new Date()
+                }) - 1
+
                 const response = await fetch(`${this.apiBaseUrl}/chat-stream`, {
                     method: "POST",
                     headers: {
@@ -172,7 +180,6 @@ export default {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`)
                 }
 
-                // Lưu session id từ cookie
                 const cookies = response.headers.get('set-cookie')
                 if (cookies) {
                     const sessionMatch = cookies.match(/session_id=([^;]+)/)
@@ -185,11 +192,6 @@ export default {
                 const reader = response.body.getReader()
                 const decoder = new TextDecoder()
                 let botMsg = ''
-                const botIndex = this.messages.push({
-                    sender: 'bot',
-                    text: '',
-                    timestamp: new Date()
-                }) - 1
 
                 // eslint-disable-next-line no-constant-condition
                 while (true) {
@@ -198,13 +200,16 @@ export default {
 
                     const chunk = decoder.decode(value, { stream: true })
                     botMsg += chunk
+                    // Cập nhật nội dung vào tin nhắn bot đã tạo sẵn
                     this.messages[botIndex].text = botMsg
                     this.scrollToBottom()
                 }
 
             } catch (error) {
                 console.error('Chat error:', error)
-
+                
+                // Nếu lỗi, xóa tin nhắn đang loading (nếu nó chưa có nội dung) hoặc báo lỗi
+                // Ở đây ta thêm tin nhắn lỗi mới
                 let errorText = '⚠️ Lỗi kết nối với hệ thống. Vui lòng thử lại sau.'
 
                 if (error.message.includes('429')) {
@@ -336,15 +341,24 @@ export default {
     text-align: center;
 }
 
+/* Căn chỉnh 3 chấm nằm gọn trong ô chat */
+.typing-indicator-wrapper {
+    display: block; /* Hoặc inline-block nếu muốn nằm cùng dòng với text cuối */
+    margin-top: 5px;
+}
+
 .typing-indicator {
     display: inline-flex;
     gap: 3px;
     align-items: center;
+    padding: 4px 8px; /* Thêm chút padding */
+    background: rgba(0,0,0,0.03); /* Nền nhẹ cho 3 chấm để nổi bật hơn chút */
+    border-radius: 10px;
 }
 
 .typing-indicator span {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #6c757d;
     animation: typing 1.4s infinite ease-in-out;
@@ -535,7 +549,6 @@ button:disabled {
     border-radius: 4px;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .chat-container {
         margin: 10px;
